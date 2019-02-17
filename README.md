@@ -27,6 +27,8 @@ The source-code for the LaTex-writtenreport describing the result of the project
 in the Docs folder. 
 
 
+# References 
+
 1. Jousset Agnès B, Rosinski-Chupin Isabelle, Takissian Julie, Glaser Philippe, Bonnin Rémy A, 
 Naas Thierry. Transcriptional Landscape of a blaKPC-2 Plasmid and Response to Imipenem Exposure 
 in Escherichia coli TOP10. *Frontiers in Microbiology*, 9(1):2929, dec 2018 
