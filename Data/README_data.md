@@ -5,7 +5,7 @@ The sample data consists of six RNA-seq samples from E.coli K-12 transformed wit
 
 The first three samples (sample 1-3) act as control and have not been exposed to the broad spectra imipenem. The last three samples (sample 4-6) have been exposed to imipenem for 10 minutes before extraction of RNA. 
 
-The sample data was taken from ArrayExpress, association number E-MTAB-7190, 2019-02-17. The downloads links used for downloading the data are:
+The sample data was taken from ArrayExpress, association number E-MTAB-7190, 2019-02-17. The links used for downloading the data are:
 
 * Sample 1: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR278/001/ERR2780171/ERR2780171.fastq.gz
 * Sample 2: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR278/002/ERR2780172/ERR2780172.fastq.gz
