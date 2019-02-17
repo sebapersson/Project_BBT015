@@ -1,4 +1,5 @@
 # Project BBT015
+## Description
 
 This project is a part of the course Advanced Bioinformatics (BBT015) at Chalmers. The aim with the project is to 
 replicate a published bioinformatic paper. 
@@ -11,7 +12,7 @@ between these two sample-groups, and overall it identified over 1500 differentia
 project is try to replicate this, with other words the goal is to identify the same differentially RNA:s as the authors of the
 paper did. 
 
-# Project structure 
+## Project structure 
 
 Each directory contains a readme.md file describing the role of that directory. The role of each directory
 can be summarised as:
@@ -27,7 +28,7 @@ The source-code for the LaTex-writtenreport describing the result of the project
 in the Docs folder. 
 
 
-# References 
+## References 
 
 1. Jousset Agnès B, Rosinski-Chupin Isabelle, Takissian Julie, Glaser Philippe, Bonnin Rémy A, 
 Naas Thierry. Transcriptional Landscape of a blaKPC-2 Plasmid and Response to Imipenem Exposure 
