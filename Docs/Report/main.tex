@@ -1,0 +1,97 @@
+\documentclass[a4paper]{article}
+\usepackage{graphicx, wrapfig} % Wrapfig tillåter placering av figur parallellt med text.
+\usepackage{amsmath, amssymb}
+\usepackage{floatflt} %f�r inkapslade bilder.
+\usepackage{fancyhdr}
+\usepackage[top=3cm, bottom=3cm,inner=3cm, outer=3cm]{geometry}	
+\usepackage{eso-pic}								% Create cover page background
+\usepackage[utf8]{inputenc}
+\usepackage[swedish, english]{babel}
+\usepackage[numbers]{natbib}
+\usepackage[toc,page]{appendix}
+\setlength{\parskip}{5.5pt}  % x pt = hopp mellan stycken
+\setlength{\parindent}{0pt} % 0 pt  = indrag
+\usepackage[format=plain, labelfont={bf}, textfont=it]{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{wasysym}
+% The addition of nice colors 
+\usepackage{color,soul}
+\usepackage[linguistics]{forest}    % For the creation of trees 
+
+
+\begin{document}\thispagestyle{empty}
+
+\pagenumbering{gobble} 
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\begin{center} % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Chalmers University of Technology}\\[1.5cm] % Name of your university/college
+\textsc{\Large Advanced bioinformatics, BBT015}\\[0.5cm] % Major heading such as course name
+
+\textsc{\Large }\\[0.5cm] %
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.8cm]
+{ \huge \bfseries Project report 
+ }\\[0.8cm] 
+\Large \bfseries Almost suiteble for publication 
+% Title of your document
+\HRule \\[0.8cm]
+
+
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushleft} \large
+\emph{}\\
+% Your name
+Sebastian Persson
+
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{}\\
+\bigskip
+% Supervisor's Name
+\end{flushright}
+\end{minipage}\\[2cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] 
+
+
+
+\vfill % Fill the rest of the page with whitespace
+\end{center}
+
+\newpage
+
+%%%%%%%%%%%%%% Table of content %%%%%%%%%%%%%%%
+\pagebreak
+\tableofcontents
+\pagebreak
+\pagenumbering{arabic} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  The text begins here %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\end{document}
