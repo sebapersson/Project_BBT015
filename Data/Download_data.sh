@@ -63,8 +63,22 @@ download_sample_data "Sample5.fastq.gz" $dataLink5 "ERR2780175.fastq.gz" 5
 dataLink6=ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR278/006/ERR2780176/ERR2780176.fastq.gz
 download_sample_data "Sample6.fastq.gz" $dataLink6 "ERR2780176.fastq.gz" 6
 
+# Data should be read only 
+chmod 444 Sample1.fastq.gz
+chmod 444 Sample2.fastq.gz
+chmod 444 Sample3.fastq.gz
+chmod 444 Sample4.fastq.gz
+chmod 444 Sample5.fastq.gz
+chmod 444 Sample6.fastq.gz
+
 # Move back to data directory 
 echo "All samples are downloaded"
 cd ..
 
 
+# --------------------------- # Reference data # ------------------------------ #
+# Create Reference_data directory of not present
+if [ ! -d "Reference_data" ]; then
+    echo "Created Reference_data directory"
+    mkdir Reference_data
+fi
