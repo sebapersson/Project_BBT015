@@ -16,6 +16,8 @@ The sample data was taken from ArrayExpress, association number E-MTAB-7190, 201
 * Sample 5: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR278/005/ERR2780175/ERR2780175.fastq.gz
 * Sample 6: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR278/006/ERR2780176/ERR2780176.fastq.gz
 
+The files can be found in *Data/Sample_data/* folder. 
+
 ## Reference data 
 
 The reference data consists of two parts, a reference genome for *E.coli* and a reference genome for the for the pBIC-1a plasmid. 
