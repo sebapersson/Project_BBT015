@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# This script will download the data required for the project and decompress it.
+# This script will download the sample data required for the project and decompress it.
 # More specifically this file will download:
 # The 6 sample FASTQ-files.
-# The 2 reference files (E.coli K12 and plasmid).
 # The script won't download a file it is already present.
 # It's important that the script should run from the data-directory!
+# The script will fix file-permission for all files
 
 # ------------------------- # Sample data # ---------------------------------- #
 # Create Sample_data directory of not present
@@ -77,8 +77,25 @@ cd ..
 
 
 # --------------------------- # Reference data # ------------------------------ #
-# Create Reference_data directory of not present
+# Check if Reference_data is available, if not something is wrong!
 if [ ! -d "Reference_data" ]; then
-    echo "Created Reference_data directory"
-    mkdir Reference_data
+    echo "Reference data isn't present, check directory structure or download it."
+    exit 1
 fi
+
+# If reference present, fix file-permissions, data should be read only
+cd Reference_data/E_coli
+
+# E.coli directory 
+for file in $( ls ); do
+    chmod 444 $file
+done 
+
+cd ../Plasmid
+
+# Plasmid directory 
+for file in $( ls ); do
+    chmod 444 $file
+done
+
+exit 0
