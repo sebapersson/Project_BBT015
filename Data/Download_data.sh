@@ -31,7 +31,7 @@ download_sample_data ()
 	echo "Sample $4 already present"
     else
 	echo "Sample $4 not present, will download"
-	wget -q $2
+	wget $2
 	# Rename
 	mv $3 ./"$1"
     fi
