@@ -34,7 +34,7 @@ The files can be found in *Data/Reference_samples/E_coli* folder.
 The plasmid used in the study is; *Klebsiella pneumoniae* strain BIC-1 plasmid pBIC-1a. The reference genome for this plasmid was downloaded from [NCBI](https://www.ncbi.nlm.nih.gov/nucleotide) nucleotide data-base, accession number; CP022574. The downloaded files are:
 
 * Sequence, fasta: Original file renamed to pBIC_1a.fasta, downloaded 2019-02-20
-* Annotation, GFF3: Original file renamed to pBIC_1a.gff3, download 2019-02-20
+* Annotation, GFF3: Original file renamed to pBIC_1a.gff3, downloaded 2019-02-20
 
 The files can be found in *Data/Reference_samples/Plasmid* folder. 
 
