@@ -7,7 +7,7 @@ Each entry in this notebook should include which date the experiment was perform
 ## Sebastian (2019-02-26)
 Created a Heat-map of based on the Poisson-distance for the Plasmid (Result/Figures/Pois_dist_heat_plasmid.pdf), see figure below: 
 
-![Heat_map_plasmid_pois](./Figures/Pois_dist_heat_plasmid.pdf)
+![Heat_map_plasmid_pois](./Figures/Pois_dist_heat_plasmid.png)
 
 There are no big surprises in this picture. As expected the three control samples (sample 1-3) cluster together, and the same goes for the imipenem exposed samples. Judging by the color intensity (describes the Poisson distance) it seems that the three control cases are more similar to each other than the imipenem exposed samples. 
 

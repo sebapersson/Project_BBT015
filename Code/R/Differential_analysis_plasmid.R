@@ -57,7 +57,7 @@ dPlasmidTransformed <- varianceStabilizingTransformation(dPlasmidFiltered, blind
 # Sample names for the heat-map 
 # Output
 # Figure 
-create_heat_map_pois_dist <- function(dFiltered, sampleNames, toExport=TRUE)
+create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, exportPng=FALSE)
 {
   # Calculate the Poisson distance
   poisDist <- PoissonDistance(t(counts(dFiltered)))
@@ -68,11 +68,15 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, toExport=TRUE)
   # Choose colour purple 
   colors <- colorRampPalette( rev(brewer.pal(9, "Purples")) )(255)
   
-  # Save the file correctly 
-  filePath <- "../../Results/Figures/Pois_dist_heat_plasmid.pdf"
   
-  if(toExport == TRUE){
+  if(exportPdf == TRUE){
+    filePath <- "../../Results/Figures/Pois_dist_heat_plasmid.pdf"
     pdf(file = filePath)
+  }
+  
+  if(exportPng == TRUE){
+    filePath <- "./../../Results/Figures/Pois_dist_heat_plasmid.png"
+    png(filename = filePath)
   }
   
   pheatmap(samplePoisDistMatrix,
@@ -80,7 +84,7 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, toExport=TRUE)
          clustering_distance_cols = poisDist$dd,
          col = colors)
   
-  if(toExport == TRUE){
+  if(exportPdf == TRUE || exportPng == TRUE){
     dev.off()
   }
 
@@ -89,5 +93,5 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, toExport=TRUE)
 # Creat the Poisson heat-map
 sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
                  "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
-create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, toExport=F)
+create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, exportPng  =  F)
 
