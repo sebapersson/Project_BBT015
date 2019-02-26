@@ -17,11 +17,6 @@ if(!require(GenomicFeatures)){
   quit(status=1)
 }
 
-if(!require(HDF5Array)){
-  message("HDF5Array isn't installed, program will exit")
-  quit(status=1)
-}
-    
 if(!require(DESeq2)){
   message("Rsamtool isn't installed, program will exit")
   quit(status=1)

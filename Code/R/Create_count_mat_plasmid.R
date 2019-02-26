@@ -6,19 +6,19 @@ rm(list = ls())
 # Quit if countMatrix already exists 
 condVec <- logical(3)
 condVec[1] <- dir.exists("../../Intermediate/Count_mat/Plasmid")
-condVec[2] <- file.exists("../../Intermediate/Count_mat/Plasmid/assays.h5")
-condVec[3] <- file.exists("../../Intermediate/Count_mat/Plasmid/se.rds")
+condVec[2] <- file.exists("../../Intermediate/Count_mat/Plasmid/Count_mat_plasmid.dat")
+condVec[3] <- file.exists("../../Intermediate/Count_mat/Plasmid/Sample_data_plasmid.dat")
 
 if(all(condVec)){
-  print("Count matrix for E. coli is already present, exit status 0")
+  print("Count matrix and sample data for plasmid is already present, exit status 0")
   quit(status = 0)
 }
 
 library(GenomicAlignments)
 library(Rsamtools)
 library(GenomicFeatures)
-library(HDF5Array)
 
+# ----------------------------------- # Creating count matrix # --------------------------------------- #
 # Creating the file-paths
 bamFilesDir <- "../../Intermediate/Alignment_data/Plasmid/"
 bamFilePaths <- c(paste0(bamFilesDir, "Sample1_plasmid.map.bam"), paste0(bamFilesDir, "Sample2_plasmid.map.bam"), 
@@ -49,7 +49,7 @@ annotationData <- makeTxDbFromGFF(filePathGFF, format = "gff3")
 # Creating GRangesList of all exons grouped by genes 
 geneList <- exonsBy(annotationData, by="gene")
 
-# Creating the count Matrix for E.coli
+# Creating the count Matrix for the plasmid 
 # Will create counts by genes
 # Use the most convservitaive union
 # Data is not paired end 
@@ -59,15 +59,46 @@ countMatPlasmid <- summarizeOverlaps(features=geneList, reads=bamFiles,
                                    ignore.strand=TRUE,
                                    fragments=FALSE )
 
+
+# Reading the sample data
+pathToSampleData <- "../../Data/Sample_data/Sample_data_info.dat"
+if(!file.exists(pathToSampleData)){
+  message("Sample data for E.coli doesn't exist.")
+  quit(status = 1)
+}
+
+sampleData <- read.table(file = pathToSampleData, header = T, sep = "\t")
+
+# Removing spaces for names
+sampleData$Source.Name <- c("Sample1", "Sample2", "Sample3", "Sample4", "Sample5", "Sample6")
+
+# Filtering out names, condition and dose
+subSampleData <- sampleData[, c(1, 28, 29)]
+names(subSampleData) <- c("sample", "condition", "dose")
+subSampleData$sample <- as.factor(subSampleData$sample)
+
+# Matching row-names to sample names 
+rownames(subSampleData) <- c("Sample1_plasmid.map.bam", "Sample2_plasmid.map.bam", "Sample3_plasmid.map.bam", 
+                             "Sample4_plasmid.map.bam", "Sample5_plasmid.map.bam", "Sample6_plasmid.map.bam")
+colData(countMatPlasmid) <- DataFrame(subSampleData)
+
+# ---------------------------------- # Write count matrix to disk # ----------------------------------- #
 # Saving the count-matrix, create directoires if they don't exist 
 if(!dir.exists("../../Intermediate/Count_mat")){
   dir.create("../../Intermediate/Count_mat")
 }
 
-dirToSaveCountMat <- "../../Intermediate/Count_mat/Plasmid/"
-saveHDF5SummarizedExperiment(countMatPlasmid, dir=dirToSaveCountMat, replace=TRUE)
+if(!dir.exists("../../Intermediate/Count_mat/Plasmid")){
+  dir.create("../../Intermediate/Count_mat/Plasmid")
+}
 
-print("The count matrix for E.coli is now located in Intermediate/Count_mat/E_coli")
+
+# Saving the count matrix and the colData
+sampleInfo <- colData(countMatPlasmid)
+countMatrix <- assay(countMatPlasmid)
+
+write.table(sampleInfo, file = "../../Intermediate/Count_mat/Plasmid/Sample_data_plasmid.dat")
+write.table(countMatrix, file = "../../Intermediate/Count_mat/Plasmid/Count_mat_plasmid.dat")
 
 quit(status = 0)
 
