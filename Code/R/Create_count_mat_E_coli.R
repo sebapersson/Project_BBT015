@@ -1,23 +1,14 @@
 # This file will create the count matrix form E.coli from the aligned bam-files located in the 
 # Intermediate/Alignment_data/E_coli folder 
+# The script will save the resulting Deseq object. 
 # Note the script should be run from the Code/R directory for all file-paths to correct. 
 rm(list = ls())
-
-# Quit if countMatrix already exists 
-condVec <- logical(3)
-condVec[1] <- dir.exists("../../Intermediate/Count_mat/E_coli")
-condVec[2] <- file.exists("../../Intermediate/Count_mat/E_coli/assays.h5")
-condVec[3] <- file.exists("../../Intermediate/Count_mat/E_coli/se.rds")
-
-if(all(condVec)){
-  print("Count matrix for E. coli is already present, exit status 0")
-  quit(status = 0)
-}
 
 library(GenomicAlignments)
 library(Rsamtools)
 library(GenomicFeatures)
 library(HDF5Array)
+library(DESeq2)
 
 # Creating the file-paths
 bamFilesDir <- "../../Intermediate/Alignment_data/E_coli/"
@@ -59,14 +50,26 @@ countMatEcoli <- summarizeOverlaps(features=geneList, reads=bamFiles,
                                    ignore.strand=TRUE,
                                    fragments=FALSE )
 
-# Saving the count-matrix, create directoires if they don't exist 
-if(!dir.exists("../../Intermediate/Count_mat")){
-  dir.create("../../Intermediate/Count_mat")
+# Reading the sample data
+pathToSampleData <- "../../Data/Sample_data/Sample_data_info.dat"
+if(!file.exists(pathToSampleData)){
+  message("Sample data for E.coli doesn't exist.")
+  quit(status = 1)
 }
 
-dirToSaveCountMat <- "../../Intermediate/Count_mat/E_coli/"
-saveHDF5SummarizedExperiment(countMatEcoli, dir=dirToSaveCountMat, replace=TRUE)
+sampleData <- read.table(file = pathToSampleData, header = T, sep = "\t")
+# Removing spaces for names
+sampleData$Source.Name <- c("Sample1", "Sample2", "Sample3", "Sample4", "Sample5", "Sample6")
 
-print("The count matrix for E.coli is now located in Intermediate/Count_mat/E_coli")
+# Filtering out names, condition and dose
+subSampleData <- sampleData[, c(1, 28, 29)]
+names(subSampleData) <- c("sample", "condition", "dose")
+subSampleData$sample <- as.factor(subSampleData$sample)
+rownames(subSampleData) <- c("Sample1.map.bam", "Sample2.map.bam", "Sample3.map.bam", 
+                             "Sample4.map.bam", "Sample5.map.bam", "Sample6.map.bam")
+colData(countMatEcoli) <- DataFrame(subSampleData)
+
+dEcoli <- DESeqDataSet(countMatEcoli, design = ~ condition)
+
 
 quit(status = 0)
