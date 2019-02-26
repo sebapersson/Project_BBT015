@@ -51,8 +51,3 @@ message("All packages are installed")
 
 quit(status = 0)
 
-
-
-
-
-
