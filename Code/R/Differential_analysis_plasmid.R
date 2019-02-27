@@ -50,6 +50,12 @@ dPlasmidFiltered <- dPlasmid[ rowSums(counts(dPlasmid)) > 1, ]
 dPlasmidTransformed <- varianceStabilizingTransformation(dPlasmidFiltered, blind = TRUE)
 
 # ------------------------------------ # Comparing samples # ----------------------------------------------- #
+# Creating the Result/Figure_copy directory if it isn't present. The reason for a second directory is to 
+# not overwrite anything in the Result/Figure (since those files are required for Notebook.md file)
+if(!dir.exists("../../Results/Figures_copy")){
+  dir.create("../../Results/Figures_copy")
+}
+
 # Function that creates a Poisson distance based Heat-map for all six-samples. The figure is stored in 
 # Result/Figures as Pois_dist_heat_plasmid.pdf
 # Input:
@@ -71,11 +77,23 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, e
   
   if(exportPdf == TRUE){
     filePath <- "../../Results/Figures/Pois_dist_heat_plasmid.pdf"
+    
+    # Don't overwrite files used for notebook.md
+    if(file.exists(filePath)){
+      filePath <- "../../Results/Figures_copy/Pois_dist_heat_plasmid.pdf"
+    }
+    
     pdf(file = filePath)
   }
   
   if(exportPng == TRUE){
     filePath <- "./../../Results/Figures/Pois_dist_heat_plasmid.png"
+    
+    # Don't overwrite files used for notebook.md
+    if(file.exists(filePath)){
+      filePath <- "./../../Results/Figures_copy/Pois_dist_heat_plasmid.png"
+    }
+    
     png(filename = filePath)
   }
   
@@ -93,5 +111,5 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, e
 # Creat the Poisson heat-map
 sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
                  "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
-create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, exportPng  =  F)
+create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, exportPdf  =  T)
 
