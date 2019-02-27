@@ -48,14 +48,17 @@ dPlasmidFiltered <- dPlasmid[ rowSums(counts(dPlasmid)) > 1, ]
 # Normalising the data (used for PCA with other things)
 # blind = TRUE -> unsupervised transformation
 dPlasmidTransformed <- varianceStabilizingTransformation(dPlasmidFiltered, blind = TRUE)
-
+# ---------------------------------------------------------------------------------------------------------- #
 # ------------------------------------ # Comparing samples # ----------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------- #
+
 # Creating the Result/Figure_copy directory if it isn't present. The reason for a second directory is to 
 # not overwrite anything in the Result/Figure (since those files are required for Notebook.md file)
 if(!dir.exists("../../Results/Figures_copy")){
   dir.create("../../Results/Figures_copy")
 }
 
+# ------------------------------------------ # Heat-map # -------------------------------------------------- #
 # Function that creates a Poisson distance based Heat-map for all six-samples. The figure is stored in 
 # Result/Figures as Pois_dist_heat_plasmid.pdf
 # Input:
@@ -113,52 +116,55 @@ sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.",
                  "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
 create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, exportPdf  =  F)
 
+# ------------------------------------------ # Heat-map # -------------------------------------------------- #
+# This section was formally a function, however using a function seemed to clash with the plot-creation, 
+# Hence this is now a continous code-section
 
-# Function that creates a PCA-plot on the transformed plasmid data 
-# Input:
-# DEseq transformed object 
-# Ouput
-# PCA-plot stored in Results/Figures
-create_pca_plot <- function(dTransformed, exportPng = FALSE, exportPdf = FALSE)
-{
-  # Performing a simpel PCA 
-  pcaData <- plotPCA(dTransformed, intgroup = c( "condition"), returnData = TRUE)
-  percentVar <- round(100 * attr(pcaData, "percentVar"))
+# Chose what format to export 
+exportPng = F; exportPdf = F
 
-  # For exporting the data
-  if(exportPdf == TRUE){
-    filePath <- "../../Results/Figures/PCA_plasmid.pdf"
-    
-    # Don't overwrite files used for notebook.md
-    if(file.exists(filePath)){
-      filePath <- "../../Results/Figures_copy/PCA_plasmid.pdf"
-    }
-    
-    pdf(file = filePath)
+# Performing a simpel PCA 
+pcaData <- plotPCA(dPlasmidTransformed, intgroup = c( "condition"), returnData = TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+# For exporting the data
+if(exportPdf == TRUE){
+  filePath <- "../../Results/Figures/PCA_plasmid.pdf"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/PCA_plasmid.pdf"
   }
   
-  if(exportPng == TRUE){
-    filePath <- "./../../Results/Figures/PCA_plasmid.pdf"
-    
-    # Don't overwrite files used for notebook.md
-    if(file.exists(filePath)){
-      filePath <- "./../../Results/Figures_copy/PCA_plasmid.png"
-    }
-    
-    png(filename = filePath)
-  } 
-  
-  ggplot(pcaData, aes(x = PC1, y = PC2, color = condition)) + ggtitle("PCA-plot plasmid") +
-    theme(plot.title = element_text(hjust = 0.5)) + geom_point(size =3) +
-    xlab(paste0("PC1: ", percentVar[1], "% variance")) +
-    ylab(paste0("PC2: ", percentVar[2], "% variance")) +
-    coord_fixed()
-  
-  if(exportPdf == TRUE || exportPng == TRUE){
-    dev.off()
-  }
-  
+  pdf(file = filePath)
 }
 
-create_pca_plot(dPlasmidTransformed, exportPng = F, exportPdf = F)
+if(exportPng == TRUE){
+  filePath <- "./../../Results/Figures/PCA_plasmid.png"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "./../../Results/Figures_copy/PCA_plasmid.png"
+  }
+  
+  png(filename = filePath)
+} 
+
+ggplot(pcaData, aes(x = PC1, y = PC2, color = condition)) + ggtitle("PCA-plot plasmid") +
+  theme(plot.title = element_text(hjust = 0.5)) + geom_point(size =3) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  coord_fixed()
+
+if(exportPdf == TRUE || exportPng == TRUE){
+  dev.off()
+}
+  
+# Remove uneccesary variables 
+rm(exportPdf, exportPng, percentVar, pcaData, filePath)
+
+
+
+
+
 
