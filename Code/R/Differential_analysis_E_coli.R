@@ -57,12 +57,12 @@ rownames(sampleDistMatrix) <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.
 colnames(sampleDistMatrix) <- NULL
 colors <- colorRampPalette( rev(brewer.pal(9, "Purples")) )(255)
 filePath <- "./../../Results/Figures/Euclid_dist_heat_E_coli.png"
-png(filename = filePath)
-pheatmap(sampleDistMatrix,
-         clustering_distance_rows = sampleDists,
-         clustering_distance_cols = sampleDists,
-         col = colors)
-dev.off()
+#png(filename = filePath)
+#pheatmap(sampleDistMatrix,
+#         clustering_distance_rows = sampleDists,
+#         clustering_distance_cols = sampleDists,
+#         col = colors)
+#dev.off()
 rm(filePath)
 
 # Creating the Result/Figure_copy directory if it isn't present. The reason for a second directory is to 
@@ -127,3 +127,51 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, e
 sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
                  "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
 create_heat_map_pois_dist(dFiltered = dEcoliFiltered, sampleNames = sampleNames, exportPdf = F,exportPng = F)
+
+
+
+# Function that creates a PCA-plot on the transformed Ecoli data 
+# Input:
+# DEseq transformed object 
+# Ouput
+# PCA-plot stored in Results/Figures
+exportPng = FALSE
+exportPdf = FALSE
+
+  # Performing a simpel PCA 
+  pcaData <- plotPCA(dEcoliTransformed, intgroup = c( "condition"), returnData = TRUE)
+  percentVar <- round(100 * attr(pcaData, "percentVar"))
+  
+  # For exporting the data
+  if(exportPdf == TRUE){
+    filePath <- "../../Results/Figures/PCA_E_coli.pdf"
+    
+    # Don't overwrite files used for notebook.md
+    if(file.exists(filePath)){
+      filePath <- "../../Results/Figures_copy/PCA_E_coli.pdf"
+    }
+    
+    pdf(file = filePath)
+  }
+  
+  if(exportPng == TRUE){
+    filePath <- "../../Results/Figures/PCA_E_coli.png"
+    
+    # Don't overwrite files used for notebook.md
+    if(file.exists(filePath)){
+      filePath <- "../../Results/Figures_copy/PCA_E_coli.png"
+    }
+    
+    png(filename = filePath)
+  } 
+
+ggplot(pcaData, aes(x = PC1, y = PC2, color = condition)) + ggtitle("PCA-plot E. coli") +
+    theme(plot.title = element_text(hjust = 0.5)) + geom_point(size =3) +
+    xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+    ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+    coord_fixed()
+  
+  if(exportPdf == TRUE || exportPng == TRUE){
+    dev.off()
+  }
+

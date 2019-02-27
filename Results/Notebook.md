@@ -28,7 +28,15 @@ Following recommendations of a minimal filtering standard, rows  with 1 or less 
 
 Created a Heat-map based on the Poisson distance for E.coli (Result/Figures/Pois_dist_heat_E_coli.pdf), see figure below.
 
-![Heat_map_plasmid_pois](./Figures/Pois_dist_heat_E_coli.png)
+![Heat_map_E_coli_pois](./Figures/Pois_dist_heat_E_coli.png)
 
 The figure is as expected with clear clustering of controls and case samples. Compared to the plasmid heat map, the similarity within the controls, respectively within the case samples, is even stronger with more intense colours.
+
+### PCA plot (E.coli)
+
+Created a PCA plot from the vts-transformed data for E.coli (Result/Figures/PCA_E_coli.pdf), see figure below.
+
+![PCA_E_coli](./Figures/PCA_E_coli.png)
+
+There is a clear seperatio of the controls and case samples, with 89% of the variance explained by the first principal component. Nothing unexpected.
 
