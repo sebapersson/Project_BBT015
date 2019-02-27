@@ -175,3 +175,48 @@ ggplot(pcaData, aes(x = PC1, y = PC2, color = condition)) + ggtitle("PCA-plot E.
     dev.off()
   }
 
+
+
+# ------------------------------------ # Differential expression analysis # ----------------------------------------------- #
+DESeqEcoli <- DESeq(dEcoliFiltered)
+
+resultsEcoli <- results(DESeqEcoli, alpha = 0.05)
+
+mcols(resultsEcoli, use.names = T)
+
+summary(resultsEcoli)
+
+# Displaying number of significant p-Values 
+nSignPval <- sum(resultsEcoli$padj < 0.05, na.rm = TRUE)
+print(sprintf("Number of significant adjusted p-Values = %d", nSignPval))
+
+# Number of upp-regulated and down-regulated significant genes 
+nDownReg <- sum((resultsEcoli$padj < 0.05) & (resultsEcoli$log2FoldChange < 0), na.rm = TRUE)
+nUpReg <- sum((resultsEcoli$padj < 0.05) & (resultsEcoli$log2FoldChange > 0), na.rm = TRUE)
+print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpReg, nDownReg) )
+
+# Plotting the top-gene, looks significant 
+topGene <- rownames(resultsEcoli)[which.min(resultsEcoli$padj)]
+plotCounts(DESeqEcoli, gene = topGene, intgroup=c("condition"))
+
+# Plotting p-values to see that everything is correct, looks uniform 
+hist(resultsEcoli$pvalue[resultsEcoli$baseMean > 1], breaks = 0:20/20,
+     col = colors, border = "white")
+
+# Exporting result, ordering by p-adj
+resultsEcoliOrdered <- resultsEcoli[order(resultsEcoli$padj), ]
+
+# The same top-genes (but slightly different order)
+head(resultsEcoliOrdered, 10)
+
+# Only exporting significant genes
+iToExport <- resultsEcoliOrdered$padj < 0.05
+iToExport[is.na(iToExport)] <- F
+signResultEcoli <- resultsEcoliOrdered[iToExport, ] 
+
+# Writing result to disk 
+filePath = "./../../Results/Tables/Table_diff_E_coli.csv"
+write.csv(signResultEcoli, file = filePath)
+
+
+
