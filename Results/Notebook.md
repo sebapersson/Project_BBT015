@@ -18,6 +18,16 @@ Created a Heat-map of based on the Poisson-distance for the Plasmid (Result/Figu
 
 There are no big surprises in this picture. As expected the three control samples (sample 1-3) cluster together, and the same goes for the imipenem exposed samples. Judging by the color intensity (describes the Poisson distance) it seems that the three control cases are more similar to each other than the imipenem exposed samples. 
 
+## Sebastian (2019-02-27)
+
+### PCA-plot plasmid
+
+Created a PCA plot from the vts-transformed data for the plasmid (Result/Figures/PCA_plasmid.pdf), see figure below.
+
+![PCA_plasmid](./Figures/PCA_plasmid.png)
+
+As seen in the figure the two sample groups are separated from each other. This results corresponds well with the two sample heat-map for the plasmid, where there is a distinct clustering of the sample groups. 
+
 ## Martina (2019-02-27)
 
 ### Filtering the data (E.coli)
