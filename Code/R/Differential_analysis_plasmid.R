@@ -196,10 +196,19 @@ resultsPlasmidOrdered <- resultsPlasmid[order(resultsPlasmid$padj), ]
 # The same top-genes (but slightly different order)
 head(resultsPlasmidOrdered, 10)
 
+# Add volcano plot
+volcPlotGenes <- data.frame(log2FoldChange=resultsPlasmid$log2FoldChange, 
+                            padj=resultsPlasmid$padj)
+volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 0.5 & volcPlotGenes$padj < 0.05)
 
-
-
-
+# Making the plot
+ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj), colour=threshold)) +
+  geom_point(alpha=0.4, size=1.75) +
+  theme(legend.position="none") +
+  xlim(c(-2.5, 2.5)) + ylim(c(0, 15)) +
+  xlab("log2 fold change") + ylab("-log10 adj p-value") +
+  ggtitle("Volcano-plot plasmid") + theme(plot.title = element_text(hjust = 0.5)) 
+  
 
 
 
