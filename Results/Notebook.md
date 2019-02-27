@@ -18,6 +18,17 @@ Created a Heat-map of based on the Poisson-distance for the Plasmid (Result/Figu
 
 There are no big surprises in this picture. As expected the three control samples (sample 1-3) cluster together, and the same goes for the imipenem exposed samples. Judging by the color intensity (describes the Poisson distance) it seems that the three control cases are more similar to each other than the imipenem exposed samples. 
 
+## Martina (2019-02-27)
 
+### Filtering the data (E.coli)
 
+Following recommendations of a minimal filtering standard, rows  with 1 or less counts were removed. This might not be strict enough, but since later analysing methods will ignore insufficient data it was concidered enough for now. 
+
+### Heat map Poisson distance (E.coli)
+
+Created a Heat-map based on the Poisson distance for E.coli (Result/Figures/Pois_dist_heat_E_coli.pdf), see figure below.
+
+![Heat_map_plasmid_pois](./Figures/Pois_dist_heat_E_coli.png)
+
+The figure is as expected with clear clustering of controls and case samples. Compared to the plasmid heat map, the similarity within the controls, respectively within the case samples, is even stronger with more intense colours.
 

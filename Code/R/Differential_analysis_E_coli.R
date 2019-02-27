@@ -7,6 +7,10 @@ library(DESeq2)
 library(GenomicAlignments)
 library(Rsamtools)
 library(GenomicFeatures)
+library(pheatmap)
+library(PoiClaClu)
+library(ggplot2)
+library(RColorBrewer)
 
 # --------------------------------- Differential analysis -------------------------------------- #
 # File path to count matrix and sample data
@@ -38,18 +42,88 @@ dEcoli <- DESeqDataSetFromMatrix(countData = countMatEcoli,
 # or only a single count across all samples. (9 rows)
 dEcoliFiltered <- dEcoli[ rowSums(counts(dEcoli)) > 1, ]
 
-# Transforming the data with VTS (n>30), yielding homoskedastic data
-# Could also use rld <- rlog(dEcoliFiltered, blind = FALSE), but might be too slow/heavy computationally
-dEcoliTransformed <- vst(dEcoliFiltered, blind = FALSE)
+# Transforming the data with VTS (n>30), yielding homoskedastic data. TRUE -> unsupervised
+# Could also use rld <- rlog(dEcoliFiltered, blind = TRUE), but might be too slow/heavy computationally
+dEcoliTransformed <- vst(dEcoliFiltered, blind = TRUE)
 
+
+# ------------------------------------ # Comparing samples # ----------------------------------------------- #
 # Creating heatmap of sample-to-sample distances
 sampleDists <- dist(t(assay(dEcoliTransformed)))
 
 sampleDistMatrix <- as.matrix( sampleDists )
-rownames(sampleDistMatrix) <- paste( dEcoliTransformed$condition, sep = " - " )
+rownames(sampleDistMatrix) <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
+                                "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
 colnames(sampleDistMatrix) <- NULL
-colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+colors <- colorRampPalette( rev(brewer.pal(9, "Purples")) )(255)
+filePath <- "./../../Results/Figures/Euclid_dist_heat_E_coli.png"
+png(filename = filePath)
 pheatmap(sampleDistMatrix,
          clustering_distance_rows = sampleDists,
          clustering_distance_cols = sampleDists,
          col = colors)
+dev.off()
+rm(filePath)
+
+# Creating the Result/Figure_copy directory if it isn't present. The reason for a second directory is to 
+# not overwrite anything in the Result/Figure (since those files are required for Notebook.md file)
+if(!dir.exists("../../Results/Figures_copy")){
+  dir.create("../../Results/Figures_copy")
+}
+
+# Function that creates a Poisson distance based Heat-map for all six-samples. The figure is stored in 
+# Result/Figures as Pois_dist_heat_E_coli.pdf
+# Input:
+# DEseq filtered object
+# Sample names for the heat-map 
+# Output
+# Figure 
+create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, exportPng=FALSE)
+{
+  # Calculate the Poisson distance
+  poisDist <- PoissonDistance(t(counts(dFiltered)))
+  samplePoisDistMatrix <- as.matrix( poisDist$dd )
+  rownames(samplePoisDistMatrix) <- sampleNames
+  colnames(samplePoisDistMatrix) <- NULL
+  
+  # Choose colour purple 
+  colors <- colorRampPalette( rev(brewer.pal(9, "Purples")) )(255)
+  
+  
+  if(exportPdf == TRUE){
+    filePath <- "../../Results/Figures/Pois_dist_heat_E_coli.pdf"
+    
+    # Don't overwrite files used for notebook.md
+    if(file.exists(filePath)){
+      filePath <- "../../Results/Figures_copy/Pois_dist_heat_E_coli.pdf"
+    }
+    
+    pdf(file = filePath)
+  }
+  
+  if(exportPng == TRUE){
+    filePath <- "./../../Results/Figures/Pois_dist_heat_E_coli.png"
+    
+    # Don't overwrite files used for notebook.md
+    if(file.exists(filePath)){
+      filePath <- "./../../Results/Figures_copy/Pois_dist_heat_E_coli.png"
+    }
+    
+    png(filename = filePath)
+  }
+  
+  pheatmap(samplePoisDistMatrix,
+           clustering_distance_rows = poisDist$dd,
+           clustering_distance_cols = poisDist$dd,
+           col = colors)
+  
+  if(exportPdf == TRUE || exportPng == TRUE){
+    dev.off()
+  }
+  
+}
+
+# Creat the Poisson heat-map
+sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
+                 "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
+create_heat_map_pois_dist(dFiltered = dEcoliFiltered, sampleNames = sampleNames, exportPdf = F,exportPng = F)
