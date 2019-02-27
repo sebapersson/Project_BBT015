@@ -38,5 +38,8 @@ Created a PCA plot from the vts-transformed data for E.coli (Result/Figures/PCA_
 
 ![PCA_E_coli](./Figures/PCA_E_coli.png)
 
-There is a clear seperatio of the controls and case samples, with 89% of the variance explained by the first principal component. Nothing unexpected.
+There is a clear seperation of the controls and case samples, with 89% of the variance explained by the first principal component. Nothing unexpected.
 
+### Differential expression analysis (E.coli)
+
+With the DESeq function in R and a set adjusted p-value of 0.05, a table of 1520 significant differentially expressed genes was created. The table will later be uploaded to Github. The original study resulted in 1563 significant genes, which is close to the result from this analysis. The most significant genes in the original study were the same as the ones found in this analysis, although the order was slightly different. Also the number of up-regulated, respectively down-regulated, significant genes was similar to the original study. The deviation of the results can be traced before the differential expression analysis, where the data used in our analysis had a total of 4251 genes while the original report had a total of 4550. The differences in the order of most significant genes could be due to using different processing or analysing steps, since these were not specified in the original report. In general, the results obtained are however satisfactory.
