@@ -48,6 +48,7 @@ dPlasmidFiltered <- dPlasmid[ rowSums(counts(dPlasmid)) > 1, ]
 # Normalising the data (used for PCA with other things)
 # blind = TRUE -> unsupervised transformation
 dPlasmidTransformed <- varianceStabilizingTransformation(dPlasmidFiltered, blind = TRUE)
+
 # ---------------------------------------------------------------------------------------------------------- #
 # ------------------------------------ # Comparing samples # ----------------------------------------------- #
 # ---------------------------------------------------------------------------------------------------------- #
@@ -162,6 +163,40 @@ if(exportPdf == TRUE || exportPng == TRUE){
   
 # Remove uneccesary variables 
 rm(exportPdf, exportPng, percentVar, pcaData, filePath)
+
+# ---------------------------------------------------------------------------------------------------------- #
+# ----------------------------------- # Differential analysis # -------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------- #
+DESeqPlasmid <- DESeq(dPlasmidFiltered)
+
+resultsPlasmid <- results(DESeqPlasmid, alpha = 0.05)
+
+summary(resultsPlasmid)
+
+# Displaying number of significant p-Values 
+nSignPval <- sum(resultsPlasmid$padj < 0.05, na.rm = TRUE)
+print(sprintf("Number of significant adjusted p-Values = %d", nSignPval))
+
+# Number of upp-regulated and down-regulated significant genes 
+nDownReg <- sum((resultsPlasmid$padj < 0.05) & (resultsPlasmid$log2FoldChange < 0), na.rm = TRUE)
+nUpReg <- sum((resultsPlasmid$padj < 0.05) & (resultsPlasmid$log2FoldChange > 0), na.rm = TRUE)
+print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpReg, nDownReg) )
+
+# Plotting the top-gene
+topGene <- rownames(resultsPlasmid)[which.min(resultsPlasmid$padj)]
+plotCounts(DESeqPlasmid, gene = topGene, intgroup=c("condition"))
+
+# Histogram over p-values, few genes but approximately uniform
+hist(resultsPlasmid$pvalue[resultsPlasmid$baseMean > 1], breaks = 0:20/20,
+     col = "steelblue", border = "white", main = "P-values plasmid")
+
+# Exporting result, ordering by p-adj
+resultsPlasmidOrdered <- resultsPlasmid[order(resultsPlasmid$padj), ]
+
+# The same top-genes (but slightly different order)
+head(resultsPlasmidOrdered, 10)
+
+
 
 
 
