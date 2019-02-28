@@ -6,10 +6,10 @@ replicate a published bioinformatic paper.
 
 The project focues on the RNA-sequence part of a [paper](https://www.frontiersin.org/articles/10.3389/fmicb.2018.02929/)  with the name; *Transcriptional Landscape of a bla_KPC-2 Plasmid and Response 
 to Imipenem Exposure in Escherichia coli TOP10* [1]. In the RNA-seq part of this study six *E.coli*-samples were investigated, 
-and all these had been transformed with the pBIC-1a plasmid (conveys resicentence to antibiotics). Three samples acted as controlls 
-while the other three had been exposed to the broad spectra Imipenem. The study investigated differences in expression levels 
-between these two sample-groups, and overall it identified over 1500 differentially expressed RNA. Thus the goal with this 
-project is try to replicate this, with other words the goal is to identify the same differentially RNA:s as the authors of the
+and all these had been transformed with the pBIC-1a plasmid (conveys resisance to antibiotics). Three samples acted as controls 
+whilst the other three had been exposed to the broad spectra Imipenem. The study investigated differences in expression levels 
+between these two sample-groups, and overall it identified over 1500 differentially expressed RNA. Thus, the goal with this 
+project is try to replicate this, with other words, to identify the same differentially RNA:s as the authors of the
 paper did. 
 
 ## Project structure 
@@ -24,7 +24,7 @@ can be summarised as:
 * *Code*: Contains the Python, R and Shell-code required to replicate the project. 
 * *Intermediate*: Intermediate files that aren't directly result. 
 
-The source-code for the LaTex-writtenreport describing the result of the project can be found 
+The source-code for the LaTeX-written report describing the result of the project can be found 
 in the Docs folder. 
 
 
