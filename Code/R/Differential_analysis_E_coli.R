@@ -291,7 +291,7 @@ ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj + 10^(-120)), col
   theme(legend.position="none") +
   xlim(c(-6, 6)) + ylim(c(0, 125)) +
   xlab("log2 fold change") + ylab("-log10 adj p-value") +
-  ggtitle("Volcano-plot plasmid") + theme(plot.title = element_text(hjust = 0.5)) 
+  ggtitle("Volcano plot E.coli") + theme(plot.title = element_text(hjust = 0.5)) 
 
 if(exportPdf == TRUE || exportPng == TRUE){
   dev.off()
