@@ -62,7 +62,7 @@ A volcano plot of the genes for the plasmid is presented below. Only genes with 
 
 Comparing the two volcano plots one can clearly see far more significant genes in the *E. coli* vs the plasmid. At first glance this seems surprising, but it probably depends on the plasmid being expressed at a lower level than the *E. coli* genes (should check this). The p-value (and the fold-change) depends on the expression level for a fixed sample-size, if the expression level is lower it will we smaller differences and a Wald-test will consequently have a harder time to distinguish a true effect from the noise in the data. Thus to actually get more significant plasmid genes (and a better characterization of it) a large sample-size would be preferred. 
 
-![Volcano_Plasmid](./Figures/Volcano_plasmid.png)
+![Volcano_Plasmid](./Figures/Volcano_Plasmid.png)
 
 ### Histogram of p-values (Plasmid)
 
