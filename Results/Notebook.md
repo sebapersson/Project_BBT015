@@ -54,6 +54,22 @@ There is a clear seperation of the controls and case samples, with 89% of the va
 
 With the DESeq function in R and a set adjusted p-value of 0.05, a table of 1520 significant differentially expressed genes was created. The table will later be uploaded to Github. The original study resulted in 1563 significant genes, which is close to the result from this analysis. The most significant genes in the original study were the same as the ones found in this analysis, although the order was slightly different. Also the number of up-regulated, respectively down-regulated, significant genes was similar to the original study. The deviation of the results can be traced before the differential expression analysis, where the data used in our analysis had a total of 4251 genes while the original report had a total of 4550. The differences in the order of most significant genes could be due to using different processing or analysing steps, since these were not specified in the original report. In general, the results obtained are however satisfactory.
 
+## Sebastian (2019-02-28)
+
+### Volcano plot (Plasmid)
+
+A volcano plot of the genes for the plasmid is presented below. Only genes with a p-value below 0.05 and log2 fold-change above 0.5 are given a special color. As noted none of the genes have a log2 fold-change above 2.0, which corresponds well with the original paper. 
+
+Comparing the two volcano plots one can clearly see far more significant genes in the *E. coli* vs the plasmid. At first glance this seems surprising, but it probably depends on the plasmid being expressed at a lower level than the *E. coli* genes (should check this). The p-value (and the fold-change) depends on the expression level for a fixed sample-size, if the expression level is lower it will we smaller differences and a Wald-test will consequently have a harder time to distinguish a true effect from the noise in the data. Thus to actually get more significant plasmid genes (and a better characterization of it) a large sample-size would be preferred. 
+
+![Volcano_Plasmid](./Figures/Volcano_plasmid.png)
+
+### Histogram of p-values (Plasmid)
+
+A histogram of the p-values (non adjusted) for the plasmid is presented below. The data looks approximately uniform for the larger p-values (harder to tell than for *E. coli* due to sample size). An approximate uniform distribution is preferred since the p-value is uniformly distributed under the null hypothesis. Note that the p-values to the left corresponds to the situation when the null hypothesis is rejected. 
+
+![Hist_p_plasmid](./Figures/Histogram_pvalues_plasmid.png)
+
 ## Martina (2019-02-28)
 
 ### Volcano plot (Ecoli)
