@@ -269,17 +269,71 @@ if(exportPdf == TRUE || exportPng == TRUE){
   dev.off()
 }
 
+rm(exportPdf, exportPng, volcPlotGenes, filePath)
 # ------------------------------------ # Exporting result # ------------------------------------------ #
-# Exporting result, ordering by p-adj
+# Function that given a string will find the corresponding match in geneInfo$Gene_names
+# Input:
+# strInput, string to search for in geneInfo$Gene_name (geneInfoName)
+# Output
+# index if matching, else it returns -1
+find_index_match <- function(strInput, geneInfoName)
+{
+  for(a in 1:length(geneInfoName)){
+    if(geneInfoName[a] == strInput){
+      return(a)
+    }
+  }
+  
+  return(-1) 
+}
+
+# Function thatt will annotate the table with descriptions
+# Input:
+# geneInfo from the file Annotation_plasmid.tsv in the data table
+# Data-frame with result from DESeq
+# Ouput:
+# Annoated table (gene descriptions)
+annotate_result <- function(geneInfo, tableToExport)
+{
+  for( i in 1:dim(tableToExport)[1] ){
+    geneName <- rownames(tableToExport)[i]
+    indexGene <- find_index_match(geneName, geneInfo$Gene_name)
+    #    print(indexGene)
+    if( indexGene  == -1){
+      next
+    }else{
+      tableToExport$Description[i] <- geneInfo$Description[indexGene]
+    }
+  }
+  
+  return(tableToExport)
+}
+
+# Only export sorted result
 resultsPlasmidOrdered <- resultsPlasmid[order(resultsPlasmid$padj), ]
 
-# The same top-genes (but slightly different order)
-head(resultsPlasmidOrdered, 10)
-
 # Read the gene names and description 
+pathToAnnotation = "../../Data/Reference_data/Plasmid/Annotation_plasmid.tsv"
+if(!file.exists(pathToAnnotation)){
+  print("Annotation file doesn't exist")
+  quit(status = 1)
+}
+
+geneInfo <- read.table(pathToAnnotation, header = T, sep = "\t")
+geneInfo <- data.frame(lapply(geneInfo, as.character), stringsAsFactors=FALSE)
+
+# Data frame to export 
+tableToExport <- data.frame(baseMean=resultsPlasmid$baseMean, log2FoldChange=resultsPlasmid$log2FoldChange, 
+                            lfcSE=resultsPlasmid$lfcSE, stat=resultsPlasmid$stat, 
+                            padj=resultsPlasmid$padj, Description=character(length(resultsPlasmid$baseMean)), 
+                            stringsAsFactors = F)
+rownames(tableToExport) <- rownames(resultsPlasmid)
+
+# Annotate the table 
+tableToExport <- annotate_result(geneInfo, tableToExport)
 
 
-  
+
 
 
 
