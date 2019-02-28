@@ -24,7 +24,7 @@ can be summarised as:
 * *Code*: Contains the Python, R and Shell-code required to replicate the project. 
 * *Intermediate*: Intermediate files that aren't directly result. 
 
-The source-code for the LaTex-writtenreport describing the result of the project can be found 
+The source-code for the LaTex-written report describing the result of the project can be found 
 in the Docs folder. 
 
 
