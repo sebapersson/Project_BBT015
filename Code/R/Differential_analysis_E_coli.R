@@ -256,7 +256,7 @@ write.csv(signResultEcoli, file = filePath)
 # Add volcano plot
 volcPlotGenes <- data.frame(log2FoldChange=resultsEcoli$log2FoldChange, 
                             padj=resultsEcoli$padj)
-volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 1 & volcPlotGenes$padj < 0.05)
+volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 2 & volcPlotGenes$padj < 0.05)
 
 # Volcano plot stored in Results/Figures
 exportPng = F
@@ -286,10 +286,10 @@ if(exportPng == TRUE){
 } 
 
 # Making the plot
-ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj), colour=threshold)) +
+ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj + 10^(-120)), colour=threshold)) +
   geom_point(alpha=0.4, size=1.75) +
   theme(legend.position="none") +
-  xlim(c(-2.5, 2.5)) + ylim(c(0, 15)) +
+  xlim(c(-6, 6)) + ylim(c(0, 125)) +
   xlab("log2 fold change") + ylab("-log10 adj p-value") +
   ggtitle("Volcano-plot plasmid") + theme(plot.title = element_text(hjust = 0.5)) 
 
