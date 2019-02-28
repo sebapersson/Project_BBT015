@@ -58,7 +58,7 @@ With the DESeq function in R and a set adjusted p-value of 0.05, a table of 1520
 
 ### Volcano plot (Ecoli)
 
-Created a volcano plot for E.coli (Results/Figures/Volcano_E_coli.png) with the results seen in the figure below. Blue genes correspond to the significant differentially expressed genes with an adjusted p-value < 0.05 and a log fold2-change larger than +- 1. The genes to the right are up-regulated while the genes to the left are down-regulated.
+Created a volcano plot for E.coli (Results/Figures/Volcano_E_coli.png) with the results seen in the figure below. Blue genes correspond to the significant differentially expressed genes with a log fold2-change larger than +- 2. The genes to the right are up-regulated while the genes to the left are down-regulated.
 
 ![Volcano_E_coli](./Figures/Volcano_E_coli.png)
 
