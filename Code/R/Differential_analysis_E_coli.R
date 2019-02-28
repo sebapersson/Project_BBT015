@@ -220,3 +220,47 @@ write.csv(signResultEcoli, file = filePath)
 
 
 
+# Add volcano plot
+volcPlotGenes <- data.frame(log2FoldChange=resultsEcoli$log2FoldChange, 
+                            padj=resultsEcoli$padj)
+volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 1 & volcPlotGenes$padj < 0.05)
+
+# Volcano plot stored in Results/Figures
+exportPng = F
+exportPdf = T
+# For exporting the data
+
+if(exportPdf == TRUE){
+  filePath <- "../../Results/Figures/Volcano_E_coli.pdf"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Volcano_E_coli.pdf"
+  }
+  
+  pdf(file = filePath)
+}
+
+if(exportPng == TRUE){
+  filePath <- "../../Results/Figures/Volcano_E_coli.png"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Volcano_E_coli.png"
+  }
+  
+  png(filename = filePath)
+} 
+
+# Making the plot
+ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj), colour=threshold)) +
+  geom_point(alpha=0.4, size=1.75) +
+  theme(legend.position="none") +
+  xlim(c(-2.5, 2.5)) + ylim(c(0, 15)) +
+  xlab("log2 fold change") + ylab("-log10 adj p-value") +
+  ggtitle("Volcano-plot plasmid") + theme(plot.title = element_text(hjust = 0.5)) 
+
+if(exportPdf == TRUE || exportPng == TRUE){
+  dev.off()
+}
+
