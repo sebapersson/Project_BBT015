@@ -52,6 +52,7 @@ except IOError:
     sys.exit(1)
 
 
-# Everything went as expected
+# Everything went as expected, make file read only
+os.chmod(filePathWrite, 0o444)
 sys.exit(0)
 
