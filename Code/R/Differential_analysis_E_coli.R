@@ -199,9 +199,42 @@ print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpR
 topGene <- rownames(resultsEcoli)[which.min(resultsEcoli$padj)]
 plotCounts(DESeqEcoli, gene = topGene, intgroup=c("condition"))
 
-# Plotting p-values to see that everything is correct, looks uniform 
+# Plotting histogram of p-values to see that everything is correct, looks uniform 
+# Histogram stored in Results/Figures
+exportPng = F
+exportPdf = F
+# For exporting the data
+
+if(exportPdf == TRUE){
+  filePath <- "../../Results/Figures/Histogram_pvalues_E_coli.pdf"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Histogram_pvalues_E_coli.pdf"
+  }
+  
+  pdf(file = filePath)
+}
+
+if(exportPng == TRUE){
+  filePath <- "../../Results/Figures/Histogram_pvalues_E_coli.png"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Histogram_pvalues_E_coli.png"
+  }
+  
+  png(filename = filePath)
+} 
+
+# Making the plot
 hist(resultsEcoli$pvalue[resultsEcoli$baseMean > 1], breaks = 0:20/20,
      col = colors, border = "white")
+
+if(exportPdf == TRUE || exportPng == TRUE){
+  dev.off()
+}
+
 
 # Exporting result, ordering by p-adj
 resultsEcoliOrdered <- resultsEcoli[order(resultsEcoli$padj), ]
@@ -227,7 +260,7 @@ volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 1 & volc
 
 # Volcano plot stored in Results/Figures
 exportPng = F
-exportPdf = T
+exportPdf = F
 # For exporting the data
 
 if(exportPdf == TRUE){

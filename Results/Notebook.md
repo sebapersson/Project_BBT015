@@ -62,3 +62,8 @@ Created a volcano plot for E.coli (Results/Figures/Volcano_E_coli.png) with the 
 
 ![Volcano_E_coli](./Figures/Volcano_E_coli.png)
 
+### Histogram of p-values (E.coli)
+
+Created a histogram of the p-values for the expressed genes (Results/Figures/Histogram_pvalues_E_coli). This was done to check that their distribution is approximately uniform. As can be seen in the figure below, this holds for  p-values > 0.05.
+
+![Histogram_pvalues_E_coli](./Figures/Histogram_pvalues_E_coli.png)
