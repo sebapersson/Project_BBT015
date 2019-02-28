@@ -45,13 +45,13 @@ echo ""
 
 # Test installment by alignment of random sequence
 echo "Testing alignment of random sequence to E.coli index"
-./../bowtie -c E_coli_index GCGTGAGCTATGAGAAAGCGCCACGCTTCC 
+./../bowtie -c E_coli_index GCCG 
 
 echo ""
 
 # Test installment by alignment of random sequence
 echo "Testing alignment of random sequence to plasmid index"
-./../bowtie -c pBIC_1a_index GCGTGAGCTATGAGAAAGCGCCACGCTTCC 
+./../bowtie -c pBIC_1a_index GCCG 
 
 echo ""
 
