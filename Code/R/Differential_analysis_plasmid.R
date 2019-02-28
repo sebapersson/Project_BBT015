@@ -167,6 +167,7 @@ rm(exportPdf, exportPng, percentVar, pcaData, filePath)
 # ---------------------------------------------------------------------------------------------------------- #
 # ----------------------------------- # Differential analysis # -------------------------------------------- #
 # ---------------------------------------------------------------------------------------------------------- #
+# -------------------------------------- # DESeq analysis # ------------------------------------------------ #
 DESeqPlasmid <- DESeq(dPlasmidFiltered)
 
 resultsPlasmid <- results(DESeqPlasmid, alpha = 0.05)
@@ -186,17 +187,71 @@ print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpR
 topGene <- rownames(resultsPlasmid)[which.min(resultsPlasmid$padj)]
 plotCounts(DESeqPlasmid, gene = topGene, intgroup=c("condition"))
 
-# Histogram over p-values, few genes but approximately uniform
+# ------------------------------ Histogram over p-values ----------------------------------------- #
+# Histogram stored in Results/Figures
+exportPng = F
+exportPdf = F
+# For exporting the data
+
+if(exportPdf == TRUE){
+  filePath <- "../../Results/Figures/Histogram_pvalues_plasmid.pdf"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Histogram_pvalues_plasmid.pdf"
+  }
+  
+  pdf(file = filePath)
+}
+
+if(exportPng == TRUE){
+  filePath <- "../../Results/Figures/Histogram_pvalues_plasmid.png"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Histogram_pvalues_plasmid.png"
+  }
+  
+  png(filename = filePath)
+} 
+
 hist(resultsPlasmid$pvalue[resultsPlasmid$baseMean > 1], breaks = 0:20/20,
      col = "steelblue", border = "white", main = "P-values plasmid")
 
-# Exporting result, ordering by p-adj
-resultsPlasmidOrdered <- resultsPlasmid[order(resultsPlasmid$padj), ]
 
-# The same top-genes (but slightly different order)
-head(resultsPlasmidOrdered, 10)
 
-# Add volcano plot
+if(exportPdf == TRUE || exportPng == TRUE){
+  dev.off()
+}
+
+rm(exportPdf, exportPng, filePath)
+
+# ------------------------------------ # Volcano plot # ----------------------------------------------- #
+# Volcano plot stored in Results/Figures
+exportPng = F; exportPdf = F
+
+if(exportPdf == TRUE){
+  filePath <- "../../Results/Figures/Volcano_Plasmid.pdf"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Volcano_Plasmid.pdf"
+  }
+  
+  pdf(file = filePath)
+}
+
+if(exportPng == TRUE){
+  filePath <- "../../Results/Figures/Volcano_Plasmid.png"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/Volcano_Plasmid.png"
+  }
+  
+  png(filename = filePath)
+} 
+
 volcPlotGenes <- data.frame(log2FoldChange=resultsPlasmid$log2FoldChange, 
                             padj=resultsPlasmid$padj)
 volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 0.5 & volcPlotGenes$padj < 0.05)
@@ -208,6 +263,22 @@ ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj), colour=threshol
   xlim(c(-2.5, 2.5)) + ylim(c(0, 15)) +
   xlab("log2 fold change") + ylab("-log10 adj p-value") +
   ggtitle("Volcano-plot plasmid") + theme(plot.title = element_text(hjust = 0.5)) 
+
+
+if(exportPdf == TRUE || exportPng == TRUE){
+  dev.off()
+}
+
+# ------------------------------------ # Exporting result # ------------------------------------------ #
+# Exporting result, ordering by p-adj
+resultsPlasmidOrdered <- resultsPlasmid[order(resultsPlasmid$padj), ]
+
+# The same top-genes (but slightly different order)
+head(resultsPlasmidOrdered, 10)
+
+# Read the gene names and description 
+
+
   
 
 
