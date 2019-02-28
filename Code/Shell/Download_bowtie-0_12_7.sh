@@ -35,7 +35,9 @@ if [ ! -f "pBIC_1a_index.1.ebwt" ]; then
     ./../bowtie-build ../../../Data/Reference_data/Plasmid/pBIC_1a.fasta pBIC_1a_index > /dev/null
     echo "Index built!"
 else
-    echo "Index for plasmid pBIC_1a already present" 
+    echo "Index for plasmid pBIC_1a already present"
+    echo "No need to download!"
+    exit 0
 fi
 
 echo ""
