@@ -60,7 +60,7 @@ data_alignment_function()
 	
 	#Create alignment for plasmid
 	cd ../Plasmid
-	echo "Creating alignment of Sample $7 to plasmid. Takes about 2 minutes"
+	echo "Creating alignment of Sample $7 to plasmid. Takes about 10 minutes"
 	./../../../Bin/bowtie-0.12.7/bowtie -tS pBIC_1a_index ../$2 $5
 	echo "Alignment created!"
 	echo ""
