@@ -11,8 +11,9 @@ library(pheatmap)
 library(PoiClaClu)
 library(ggplot2)
 library(RColorBrewer)
+library(xtable)
 
-# --------------------------------- Differential analysis -------------------------------------- #
+# --------------------------------- Setting up DEseq object analysis -------------------------------------- #
 # File path to count matrix and sample data
 pathCountMat <- "../../Intermediate/Count_mat/E_coli/Count_mat_E_coli.dat"
 pathSampleData <- "../../Intermediate/Count_mat/E_coli/Sample_data_E_coli.dat"
@@ -47,23 +48,10 @@ dEcoliFiltered <- dEcoli[ rowSums(counts(dEcoli)) > 1, ]
 dEcoliTransformed <- vst(dEcoliFiltered, blind = TRUE)
 
 
+# ---------------------------------------------------------------------------------------------------------- #
 # ------------------------------------ # Comparing samples # ----------------------------------------------- #
-# Creating heatmap of sample-to-sample distances
-sampleDists <- dist(t(assay(dEcoliTransformed)))
-
-sampleDistMatrix <- as.matrix( sampleDists )
-rownames(sampleDistMatrix) <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
-                                "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
-colnames(sampleDistMatrix) <- NULL
+# ---------------------------------------------------------------------------------------------------------- #
 colors <- colorRampPalette( rev(brewer.pal(9, "Purples")) )(255)
-filePath <- "./../../Results/Figures/Euclid_dist_heat_E_coli.png"
-#png(filename = filePath)
-#pheatmap(sampleDistMatrix,
-#         clustering_distance_rows = sampleDists,
-#         clustering_distance_cols = sampleDists,
-#         col = colors)
-#dev.off()
-rm(filePath)
 
 # Creating the Result/Figure_copy directory if it isn't present. The reason for a second directory is to 
 # not overwrite anything in the Result/Figure (since those files are required for Notebook.md file)
@@ -71,6 +59,7 @@ if(!dir.exists("../../Results/Figures_copy")){
   dir.create("../../Results/Figures_copy")
 }
 
+# ------------------------------------------ # Heat-map # -------------------------------------------------- #
 # Function that creates a Poisson distance based Heat-map for all six-samples. The figure is stored in 
 # Result/Figures as Pois_dist_heat_E_coli.pdf
 # Input:
@@ -129,12 +118,7 @@ sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.",
 create_heat_map_pois_dist(dFiltered = dEcoliFiltered, sampleNames = sampleNames, exportPdf = F,exportPng = F)
 
 
-
-# Function that creates a PCA-plot on the transformed Ecoli data 
-# Input:
-# DEseq transformed object 
-# Ouput
-# PCA-plot stored in Results/Figures
+# ------------------------------------------ # PCA # -------------------------------------------------- #
 exportPng = FALSE
 exportPdf = FALSE
 
@@ -176,8 +160,10 @@ ggplot(pcaData, aes(x = PC1, y = PC2, color = condition)) + ggtitle("PCA-plot E.
   }
 
 
-
-# ------------------------------------ # Differential expression analysis # ----------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------- #
+# ----------------------------------- # Differential analysis # -------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------- #
+# -------------------------------------- # DESeq analysis # ------------------------------------------------ #
 DESeqEcoli <- DESeq(dEcoliFiltered)
 
 resultsEcoli <- results(DESeqEcoli, alpha = 0.05)
@@ -195,10 +181,7 @@ nDownReg <- sum((resultsEcoli$padj < 0.05) & (resultsEcoli$log2FoldChange < 0), 
 nUpReg <- sum((resultsEcoli$padj < 0.05) & (resultsEcoli$log2FoldChange > 0), na.rm = TRUE)
 print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpReg, nDownReg) )
 
-# Plotting the top-gene, looks significant 
-topGene <- rownames(resultsEcoli)[which.min(resultsEcoli$padj)]
-plotCounts(DESeqEcoli, gene = topGene, intgroup=c("condition"))
-
+# ------------------------------ Histogram over p-values ----------------------------------------- #
 # Plotting histogram of p-values to see that everything is correct, looks uniform 
 # Histogram stored in Results/Figures
 exportPng = F
@@ -236,23 +219,7 @@ if(exportPdf == TRUE || exportPng == TRUE){
 }
 
 
-# Exporting result, ordering by p-adj
-resultsEcoliOrdered <- resultsEcoli[order(resultsEcoli$padj), ]
-
-# The same top-genes (but slightly different order)
-head(resultsEcoliOrdered, 10)
-
-# Only exporting significant genes
-iToExport <- resultsEcoliOrdered$padj < 0.05
-iToExport[is.na(iToExport)] <- F
-signResultEcoli <- resultsEcoliOrdered[iToExport, ] 
-
-# Writing result to disk 
-filePath = "./../../Results/Tables/Table_diff_E_coli.csv"
-write.csv(signResultEcoli, file = filePath)
-
-
-
+# ------------------------------------ # Volcano plot # ----------------------------------------------- #
 # Add volcano plot
 volcPlotGenes <- data.frame(log2FoldChange=resultsEcoli$log2FoldChange, 
                             padj=resultsEcoli$padj)
@@ -296,4 +263,22 @@ ggplot(data=volcPlotGenes, aes(x=log2FoldChange, y=-log10(padj + 10^(-120)), col
 if(exportPdf == TRUE || exportPng == TRUE){
   dev.off()
 }
+
+# ---------------------------------------------------------------------------------------------------------- #
+# ------------------------------------- # Exporting results # ---------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------- #
+# Exporting result, ordering by p-adj
+resultsEcoliOrdered <- resultsEcoli[order(resultsEcoli$padj), ]
+
+# The same top-genes (but slightly different order)
+head(resultsEcoliOrdered, 10)
+
+# Only exporting significant genes
+iToExport <- resultsEcoliOrdered$padj < 0.05
+iToExport[is.na(iToExport)] <- F
+signResultEcoli <- resultsEcoliOrdered[iToExport, ] 
+
+# Writing result to disk 
+filePath = "./../../Results/Tables/Table_diff_E_coli.csv"
+write.csv(signResultEcoli, file = filePath)
 
