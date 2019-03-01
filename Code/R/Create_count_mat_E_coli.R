@@ -99,6 +99,6 @@ countMatrix <- assay(countMatEcoli)
 
 write.table(sampleInfo, file = "../../Intermediate/Count_mat/E_coli/Sample_data_E_coli.dat")
 write.table(countMatrix, file = "../../Intermediate/Count_mat/E_coli/Count_mat_E_coli.dat")
-
+print("Count matrix created for E. coli")
 
 quit(status = 0)

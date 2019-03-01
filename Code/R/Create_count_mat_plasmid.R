@@ -92,13 +92,13 @@ if(!dir.exists("../../Intermediate/Count_mat/Plasmid")){
   dir.create("../../Intermediate/Count_mat/Plasmid")
 }
 
-
 # Saving the count matrix and the colData
 sampleInfo <- colData(countMatPlasmid)
 countMatrix <- assay(countMatPlasmid)
 
 write.table(sampleInfo, file = "../../Intermediate/Count_mat/Plasmid/Sample_data_plasmid.dat")
 write.table(countMatrix, file = "../../Intermediate/Count_mat/Plasmid/Count_mat_plasmid.dat")
+print("Count matrix created for plasmid")
 
 quit(status = 0)
 
