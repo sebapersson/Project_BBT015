@@ -10,7 +10,7 @@ condVec[2] <- file.exists("../../Intermediate/Count_mat/Plasmid/Count_mat_plasmi
 condVec[3] <- file.exists("../../Intermediate/Count_mat/Plasmid/Sample_data_plasmid.dat")
 
 if(all(condVec)){
-  print("Count matrix and sample data for plasmid is already present, exit status 0")
+  print("Count matrix and sample data for plasmid is already present)
   quit(status = 0)
 }
 

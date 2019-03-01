@@ -269,9 +269,6 @@ if(exportPdf == TRUE || exportPng == TRUE){
 # Exporting result, ordering by p-adj
 resultsEcoliOrdered <- resultsEcoli[order(resultsEcoli$padj), ]
 
-# The same top-genes (but slightly different order)
-head(resultsEcoliOrdered, 10)
-
 # Only exporting significant genes
 iToExport <- resultsEcoliOrdered$padj < 0.05
 iToExport[is.na(iToExport)] <- FALSE

@@ -10,7 +10,7 @@ condVec[2] <- file.exists("../../Intermediate/Count_mat/E_coli/Count_mat_E_coli.
 condVec[3] <- file.exists("../../Intermediate/Count_mat/E_coli/Sample_data_E_coli.dat")
 
 if(all(condVec)){
-  print("Count matrix for E. coli is already present, exit status 0")
+  print("Count matrix for E. coli is already present")
   quit(status = 0)
 }
 
