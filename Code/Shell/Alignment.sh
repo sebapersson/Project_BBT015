@@ -31,7 +31,7 @@ data_alignment_function()
 {
     # Perform alignments for E.coli genome and plasmid if plasmid bamfile does not exist
     cd E_coli
-    if [ ! -f  $6 ]; then
+    if [ ! -f  $4 ]; then
 	cd ..
 
 	echo "Retrieving Sample $7" 
@@ -79,7 +79,9 @@ data_alignment_function()
 	echo ""
 	echo "Alignment performed successfully for Sample $7"
     else
-	echo "Alignment files for Sample $7 already exists"	
+	echo "Alignment files for Sample $7 already exists"
+	# Move back to Alignment_data directory
+	cd ..
     fi
 }
 
