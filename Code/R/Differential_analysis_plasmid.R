@@ -14,6 +14,7 @@ library(pheatmap)
 library(PoiClaClu)
 library(ggplot2)
 library(RColorBrewer)
+library(xtable)
 
 # --------------------------------- Setting up DEseq object analysis -------------------------------------- #
 # File path to count matrix and sample data
@@ -34,7 +35,7 @@ sampleDataPlasmid <- read.table(file = pathSampleData)
 sampleDataPlasmid$dose[1:3] <- c(0L, 0L, 0L)
 
 # Setting none imipenem as base-line
-sampleDataPlasmid$condition <- relevel(sampleDataEcoli$condition, "none")
+sampleDataPlasmid$condition <- relevel(sampleDataPlasmid$condition, "none")
 
 # Creating DEseq2 object 
 dPlasmid <- DESeqDataSetFromMatrix(countData = countMatPlasmid, 
@@ -67,7 +68,7 @@ if(!dir.exists("../../Results/Figures_copy")){
 # Sample names for the heat-map 
 # Output
 # Figure 
-create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, exportPng=FALSE)
+create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=F, exportPng=F)
 {
   # Calculate the Poisson distance
   poisDist <- PoissonDistance(t(counts(dFiltered)))
@@ -115,14 +116,14 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, e
 # Creat the Poisson heat-map
 sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
                  "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
-create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, exportPdf  =  F)
+create_heat_map_pois_dist(dFiltered = dPlasmidFiltered, sampleNames = sampleNames, exportPdf = T, exportPng = F)
 
-# ------------------------------------------ # Heat-map # -------------------------------------------------- #
+# ------------------------------------------ # PCA # -------------------------------------------------- #
 # This section was formally a function, however using a function seemed to clash with the plot-creation, 
 # Hence this is now a continous code-section
 
 # Chose what format to export 
-exportPng = F; exportPdf = F
+exportPng = F; exportPdf = T
 
 # Performing a simpel PCA 
 pcaData <- plotPCA(dPlasmidTransformed, intgroup = c( "condition"), returnData = TRUE)
@@ -183,14 +184,11 @@ nDownReg <- sum((resultsPlasmid$padj < 0.05) & (resultsPlasmid$log2FoldChange < 
 nUpReg <- sum((resultsPlasmid$padj < 0.05) & (resultsPlasmid$log2FoldChange > 0), na.rm = TRUE)
 print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpReg, nDownReg) )
 
-# Plotting the top-gene
-topGene <- rownames(resultsPlasmid)[which.min(resultsPlasmid$padj)]
-plotCounts(DESeqPlasmid, gene = topGene, intgroup=c("condition"))
 
 # ------------------------------ Histogram over p-values ----------------------------------------- #
 # Histogram stored in Results/Figures
 exportPng = F
-exportPdf = F
+exportPdf = T
 # For exporting the data
 
 if(exportPdf == TRUE){
@@ -228,7 +226,7 @@ rm(exportPdf, exportPng, filePath)
 
 # ------------------------------------ # Volcano plot # ----------------------------------------------- #
 # Volcano plot stored in Results/Figures
-exportPng = F; exportPdf = F
+exportPng = F; exportPdf = T
 
 if(exportPdf == TRUE){
   filePath <- "../../Results/Figures/Volcano_Plasmid.pdf"
@@ -319,21 +317,56 @@ if(!file.exists(pathToAnnotation)){
   quit(status = 1)
 }
 
-geneInfo <- read.table(pathToAnnotation, header = T, sep = "\t")
+geneInfo <- read.delim(pathToAnnotation, header = T, sep = "\t")
 geneInfo <- data.frame(lapply(geneInfo, as.character), stringsAsFactors=FALSE)
 
 # Data frame to export 
-tableToExport <- data.frame(baseMean=resultsPlasmid$baseMean, log2FoldChange=resultsPlasmid$log2FoldChange, 
-                            lfcSE=resultsPlasmid$lfcSE, stat=resultsPlasmid$stat, 
-                            padj=resultsPlasmid$padj, Description=character(length(resultsPlasmid$baseMean)), 
+tableToExport <- data.frame(baseMean=resultsPlasmidOrdered$baseMean, 
+                            log2FoldChange=resultsPlasmidOrdered$log2FoldChange, 
+                            lfcSE=resultsPlasmidOrdered$lfcSE, 
+                            stat=resultsPlasmidOrdered$stat, 
+                            padj=resultsPlasmidOrdered$padj, 
+                            Description=character(length(resultsPlasmid$baseMean)), 
                             stringsAsFactors = F)
-rownames(tableToExport) <- rownames(resultsPlasmid)
+rownames(tableToExport) <- rownames(resultsPlasmidOrdered)
 
 # Annotate the table 
 tableToExport <- annotate_result(geneInfo, tableToExport)
 
+# Filter out all genes with significant p-values
+tableToExport <- tableToExport[-which( is.na(tableToExport$padj) ), ]
+tableToExport <- tableToExport[tableToExport$padj < 0.05, ]
 
+# Set path to table where result is stored 
+pathToTables <- "../../Results/Tables"
+if( !dir.exists(pathToTables) ){
+  # The case Tables direcotry doesn't exist
+  dir.create(pathToTables)
+  pathToExport <- "../../Results/Tables/Table_plasmid.csv"
+  rm(pathToTables)
+}else if( file.exists("../../Results/Tables/Table_plasmid.csv") ){
+  # The case a table alreday exists 
+  if( !dir.exists("../../Results/Tables_copy") ){
+    dir.create("../../Results/Tables_copy")
+  }
+  pathToExport <- "../../Results/Tables_copy/Table_plasmid.csv"     
+  rm(pathToTables)
+}else{
+  pathToExport <- "../../Results/Tables/Table_plasmid.csv"
+  rm(pathToTables)
+}
 
+# Export the table 
+write.csv(tableToExport, file = pathToExport)
 
+# Create LaTex-code for table and store in scratch 
+tableForLatex <- data.frame(log2_fold_change = tableToExport$log2FoldChange, 
+                            fold_change = 2 ** (tableToExport$log2FoldChange),
+                            padj = tableToExport$padj, 
+                            Description = tableToExport$Description, 
+                            stringsAsFactors = F)
+row.names(tableForLatex) <- row.names(tableToExport)
+codeLatex <- xtable(tableForLatex, digits = -10)
+print(codeLatex, file="../../Scratch/LaTex_plasmid_table.txt")
 
 
