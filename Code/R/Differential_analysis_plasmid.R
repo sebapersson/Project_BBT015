@@ -366,7 +366,7 @@ tableForLatex <- data.frame(log2_fold_change = tableToExport$log2FoldChange,
                             Description = tableToExport$Description, 
                             stringsAsFactors = F)
 row.names(tableForLatex) <- row.names(tableToExport)
-codeLatex <- xtable(tableForLatex, digits = -10)
+codeLatex <- xtable(tableForLatex, digits = -1)
 print(codeLatex, file="../../Scratch/LaTex_plasmid_table.txt")
 
 
