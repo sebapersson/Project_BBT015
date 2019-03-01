@@ -115,49 +115,48 @@ create_heat_map_pois_dist <- function(dFiltered, sampleNames, exportPdf=FALSE, e
 # Creat the Poisson heat-map
 sampleNames <- c("Sample1-Cont.", "Sample2-Cont.", "Sample3-Cont.", 
                  "Sample4-Case", "Sample5-Case" ,"Sample6-Case")
-create_heat_map_pois_dist(dFiltered = dEcoliFiltered, sampleNames = sampleNames, exportPdf = F,exportPng = F)
-
+create_heat_map_pois_dist(dFiltered = dEcoliFiltered, sampleNames = sampleNames, exportPdf = T,exportPng = F)
 
 # ------------------------------------------ # PCA # -------------------------------------------------- #
 exportPng = FALSE
-exportPdf = FALSE
+exportPdf = TRUE
 
-  # Performing a simpel PCA 
-  pcaData <- plotPCA(dEcoliTransformed, intgroup = c( "condition"), returnData = TRUE)
-  percentVar <- round(100 * attr(pcaData, "percentVar"))
+# Performing a simpel PCA 
+pcaData <- plotPCA(dEcoliTransformed, intgroup = c( "condition"), returnData = TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+# For exporting the data
+if(exportPdf == TRUE){
+  filePath <- "../../Results/Figures/PCA_E_coli.pdf"
   
-  # For exporting the data
-  if(exportPdf == TRUE){
-    filePath <- "../../Results/Figures/PCA_E_coli.pdf"
-    
-    # Don't overwrite files used for notebook.md
-    if(file.exists(filePath)){
-      filePath <- "../../Results/Figures_copy/PCA_E_coli.pdf"
-    }
-    
-    pdf(file = filePath)
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/PCA_E_coli.pdf"
   }
   
-  if(exportPng == TRUE){
-    filePath <- "../../Results/Figures/PCA_E_coli.png"
-    
-    # Don't overwrite files used for notebook.md
-    if(file.exists(filePath)){
-      filePath <- "../../Results/Figures_copy/PCA_E_coli.png"
-    }
-    
-    png(filename = filePath)
-  } 
+  pdf(file = filePath)
+}
+
+if(exportPng == TRUE){
+  filePath <- "../../Results/Figures/PCA_E_coli.png"
+  
+  # Don't overwrite files used for notebook.md
+  if(file.exists(filePath)){
+    filePath <- "../../Results/Figures_copy/PCA_E_coli.png"
+  }
+  
+  png(filename = filePath)
+} 
 
 ggplot(pcaData, aes(x = PC1, y = PC2, color = condition)) + ggtitle("PCA-plot E. coli") +
-    theme(plot.title = element_text(hjust = 0.5)) + geom_point(size =3) +
-    xlab(paste0("PC1: ", percentVar[1], "% variance")) +
-    ylab(paste0("PC2: ", percentVar[2], "% variance")) +
-    coord_fixed()
-  
-  if(exportPdf == TRUE || exportPng == TRUE){
-    dev.off()
-  }
+  theme(plot.title = element_text(hjust = 0.5)) + geom_point(size =3) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  coord_fixed()
+
+if(exportPdf == TRUE || exportPng == TRUE){
+  dev.off()
+}
 
 
 # ---------------------------------------------------------------------------------------------------------- #
@@ -184,10 +183,10 @@ print( sprintf("Number of upregulated = %d, number of down regulated = %d", nUpR
 # ------------------------------ Histogram over p-values ----------------------------------------- #
 # Plotting histogram of p-values to see that everything is correct, looks uniform 
 # Histogram stored in Results/Figures
-exportPng = F
-exportPdf = F
-# For exporting the data
+exportPng = FALSE
+exportPdf = TRUE
 
+# For exporting the data
 if(exportPdf == TRUE){
   filePath <- "../../Results/Figures/Histogram_pvalues_E_coli.pdf"
   
@@ -226,8 +225,8 @@ volcPlotGenes <- data.frame(log2FoldChange=resultsEcoli$log2FoldChange,
 volcPlotGenes$threshold = as.factor(abs(volcPlotGenes$log2FoldChange) > 2 & volcPlotGenes$padj < 0.05)
 
 # Volcano plot stored in Results/Figures
-exportPng = F
-exportPdf = F
+exportPng = FALSE
+exportPdf = TRUE
 # For exporting the data
 
 if(exportPdf == TRUE){
@@ -275,10 +274,36 @@ head(resultsEcoliOrdered, 10)
 
 # Only exporting significant genes
 iToExport <- resultsEcoliOrdered$padj < 0.05
-iToExport[is.na(iToExport)] <- F
+iToExport[is.na(iToExport)] <- FALSE
 signResultEcoli <- resultsEcoliOrdered[iToExport, ] 
 
-# Writing result to disk 
-filePath = "./../../Results/Tables/Table_diff_E_coli.csv"
-write.csv(signResultEcoli, file = filePath)
+# Setting correct path for table 
+pathToTables <- "../../Results/Tables"
+if( !dir.exists(pathToTables) ){
+  # The case Tables direcotry doesn't exist
+  dir.create(pathToTables)
+  pathToExport <- "../../Results/Tables/Table_E_coli.csv"
+  rm(pathToTables)
+}else if( file.exists("../../Results/Tables/Table_E_coli.csv") ){
+  # The case a table alreday exists 
+  if( !dir.exists("../../Results/Tables_copy") ){
+    dir.create("../../Results/Tables_copy")
+  }
+  pathToExport <- "../../Results/Tables_copy/Table_E_coli.csv"     
+  rm(pathToTables)
+}else{
+  pathToExport <- "../../Results/Tables/Table_E_coli.csv"
+  rm(pathToTables)
+}
 
+# Writing result to disk 
+write.csv(signResultEcoli, file = pathToExport)
+
+# Creating LaTex table for export, 20 most significant genes 
+tableForLatex <- data.frame(log2_fold_change = signResultEcoli$log2FoldChange[1:20], 
+                            fold_change = (2 ** (signResultEcoli$log2FoldChange))[1:20],
+                            padj = signResultEcoli$padj[1:20], 
+                            stringsAsFactors = F)
+row.names(tableForLatex) <- row.names(signResultEcoli)[1:20]
+codeLatex <- xtable(tableForLatex, digits = -1)
+print(codeLatex, file="../../Scratch/LaTex_E_coli_table.txt")

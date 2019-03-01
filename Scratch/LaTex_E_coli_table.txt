@@ -1,0 +1,31 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Mar  1 09:07:11 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & log2\_fold\_change & fold\_change & padj \\ 
+  \hline
+dcuC & -4.1E+00 & 6.0E-02 & 0.0E+00 \\ 
+  frdC & -3.8E+00 & 7.0E-02 & 0.0E+00 \\ 
+  gatY & -3.4E+00 & 9.3E-02 & 0.0E+00 \\ 
+  glpA & -5.5E+00 & 2.1E-02 & 0.0E+00 \\ 
+  nikB & -4.4E+00 & 4.7E-02 & 0.0E+00 \\ 
+  nikC & -4.4E+00 & 4.6E-02 & 0.0E+00 \\ 
+  yfcC & -4.9E+00 & 3.3E-02 & 0.0E+00 \\ 
+  yhbU & -4.6E+00 & 4.0E-02 & 0.0E+00 \\ 
+  yhbV & -3.8E+00 & 7.3E-02 & 0.0E+00 \\ 
+  yjjI & -4.2E+00 & 5.4E-02 & 0.0E+00 \\ 
+  nirD & -3.3E+00 & 1.0E-01 & 1.5E-287 \\ 
+  frdA & -3.6E+00 & 8.0E-02 & 1.8E-283 \\ 
+  aspA & -3.1E+00 & 1.1E-01 & 8.5E-277 \\ 
+  glpB & -4.6E+00 & 4.2E-02 & 3.4E-262 \\ 
+  napB & -4.1E+00 & 5.7E-02 & 3.8E-245 \\ 
+  glpT & -3.5E+00 & 8.8E-02 & 4.2E-243 \\ 
+  hybO & -3.1E+00 & 1.1E-01 & 3.2E-217 \\ 
+  yjjW & -3.9E+00 & 6.9E-02 & 1.2E-201 \\ 
+  frdD & -3.9E+00 & 6.8E-02 & 2.2E-194 \\ 
+  napC & -3.2E+00 & 1.1E-01 & 1.4E-189 \\ 
+   \hline
+\end{tabular}
+\end{table}
