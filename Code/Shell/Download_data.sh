@@ -7,7 +7,10 @@
 # It's important that the script should run from the data-directory!
 # The script will fix file-permission for all files
 
-# ------------------------- # Sample data # ---------------------------------- #
+# ------------------------- # Sample data # -------------------------------- #
+# Move to data-directory
+cd ../../Data/
+
 # Create Sample_data directory of not present
 if [ ! -d "Sample_data" ]; then
     echo "Created Sample_data directory"
