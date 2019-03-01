@@ -57,6 +57,8 @@ echo ""
 
 if [ -f "pBIC_1a_index.1.ebwt" ]; then
     echo "Download of bowtie-0.12.7 and indexes complete!"
+    exit 0
 else
     echo "Something went wrong"
+    exit 1
 fi
