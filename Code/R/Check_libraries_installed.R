@@ -9,22 +9,27 @@ if(!require(Rsamtools)){
 
 if(!require(GenomicAlignments)){
   message("GenomicAlignments isn't installed, program will exit")
-  quit(status=1)
+  quit(status=2)
 }
 
 if(!require(GenomicFeatures)){
   write("GenomicFeatures isn't installed, program will exit")
-  quit(status=1)
+  quit(status=3)
 }
 
 if(!require(DESeq2)){
   message("Rsamtool isn't installed, program will exit")
-  quit(status=1)
+  quit(status=4)
 }
 
 if(!require(pheatmap)){
   print("pheatmap isn't installed, will install:")
   install.packages("pheatmap")
+}
+
+if(!require(xtable)){
+  print("pheatmap isn't installed, will install:")
+  install.packages("xtable")
 }
 
 if(!require(RColorBrewer)){
