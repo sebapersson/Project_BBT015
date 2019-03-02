@@ -1,6 +1,6 @@
 # Data information 
 
-For downloading the sample data, and store it in a new directory called *Sample_data*, run the script *Download_data.sh* located in the *Data* directory. A description of the different data-files is given below:
+For downloading the sample data, and store it in a new directory called *Sample_data*, run the script *Download_data.sh* located in the *Code/Shell* directory. A description of the different data-files is given below:
 
 ## Sample data 
 The sample data consists of six RNA-seq samples from E.coli K-12 transformed with the pBIC-1a plasmid. Sequencing of the data was performed using Illumina HiSeq 2500 in singe-read mode with 50 cycles (not paried-ends). 
@@ -36,5 +36,5 @@ The plasmid used in the study is; *Klebsiella pneumoniae* strain BIC-1 plasmid p
 * Sequence, fasta: Original file renamed to pBIC_1a.fasta, downloaded 2019-02-20
 * Annotation, GFF3: Original file renamed to pBIC_1a.gff3, downloaded 2019-02-20
 
-The files can be found in *Data/Reference_samples/Plasmid* folder. 
+The files can be found in *Data/Reference_samples/Plasmid* folder. Besides these files the *Annotate_plasmid.py* script will create an extra annotation file, from the gff3-file, containing the name and description for each plasmid gene. 
 
