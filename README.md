@@ -30,7 +30,7 @@ in the *Docs* folder.
 
 ## Requirements for replication of result
 
-This entire repository was created on Ubuntu Linux, and the code should be able to run on any Unix-based system. R version 3.5.2 and Python version 3.6.7 was used to produce the result. Since the python-code only relies on standard libraries (**sys**, **re** and **os**) using a different version shouldn't give a different result than that in the *Results*-directory. A different R-version however might produce a different result, which is mainly due to the *bioconductor*-packages which can produce different results for different for different R-versions. Thus to ensure a full replication R version 3.5.2 and the package version listed below should be used. The non-standard R-packages used for the analysis were:
+This entire repository was created on Ubuntu Linux, and the code should be able to run on any Unix-based system. R version 3.5.2 and Python version 3.6.7 was used to produce the result. Since the python-code only relies on standard libraries (**sys**, **re** and **os**) a different Python-version shouldn't produce a different result than that in the *Results*-directory. A different R-version however might produce a different result, which is mainly due to the *bioconductor*-packages. Thus to ensure a full replication R version 3.5.2 and the package-versions below should be used. The non-standard R-packages used for the analysis were:
 
 * **Rsamtools**, version 1.34.1.
 * **GenomicAlignments**, version 1.18.1.
@@ -40,7 +40,7 @@ This entire repository was created on Ubuntu Linux, and the code should be able 
 * **ggplot2**, version 3.1.0
 * **PoiClaClu**, version 1.0.2.1
 
-Besides these packages **xtable** (1.8.3) and **RColorBrewer** (1.1.2) are used. However different versions of those shouldn't affect the analysis in any way, since they are only used to produce colors for the graphs and tables for LaTex. 
+Besides these packages **xtable** (1.8.3) and **RColorBrewer** (1.1.2) were used. However different versions of those shouldn't affect the analysis in any way, since they are only used to produce tables for LaTex and colors for the graphs.
 
 ## References 
 
