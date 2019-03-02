@@ -40,7 +40,7 @@ This entire repository was created on Ubuntu Linux, and the code should be able 
 * **ggplot2**, version 3.1.0
 * **PoiClaClu**, version 1.0.2.1
 
-Besides these packages **xtable** (1.8.3) and **RColorBrewer** are used. However different versions of those shouldn't affect the analysis in any way, since they are only used to produce colors for the graphs and tables for LaTex. 
+Besides these packages **xtable** (1.8.3) and **RColorBrewer** (1.1.2) are used. However different versions of those shouldn't affect the analysis in any way, since they are only used to produce colors for the graphs and tables for LaTex. 
 
 ## References 
 
