@@ -10,7 +10,7 @@ between these two sample-groups, and overall it identified over 1500 differentia
 project is try to replicate this, with other words, to identify the same differentially RNA:s as the authors of the
 paper did. 
 
-To fully replicate the produced result in this project the requirements in the *Requirements for replication of result* section below should be fulfilled. Given this all the tables and figures in the *Results*-directory can be re-created by running *Run_all.sh* script in the *Code/Shell*-directory from its location. 
+To fully replicate the produced result in this project the requirements in the *Requirements for replication of result* section below should be fulfilled. Given this all the tables and figures in the *Results*-directory can be re-created by running *Run_all.sh* script in the *Code/Shell*-directory. 
 
 ## Project structure 
 
