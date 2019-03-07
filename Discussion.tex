@@ -1,0 +1,42 @@
+%Compare our results with original\\
+%Possible reasons for differences, felkällor\\
+
+%Diskutera att det är okej att använda tidigare version av Bowtie eftersom våra reads inte är så långa
+
+
+
+%CHECK Färre totalt antal gener (40), redan från countmatrix (början) 
+
+%CHECK Gff filen kan innehålla färre gener --> färre annoterade gener, men samma gff fil som användes i artikeln.
+
+%CHECK Kan ha att göra med nyare DSEq version.
+
+% Några toppgener stämmer överens, men inte alla. Några saknas. Några är version 1 och två, saknad kunskap? Annan 
+
+%CHECK ingen normalisering rekommenderad i artikel för PCA, körde på rekommenderade av DSEq --> Samma tolkning men annan PCA plot. Misstänkt anledning till annat utseende på PCA plot
+The purpose of reproducing the results from the study was partially successful. Although the results were overall similar, some information differed in number of expressed genes and the plasmid annotation was unsuccessful, making it hard to compare results.  
+
+In \textit{E.coli}, the 20 most significant differentially expressed genes, see tables \ref{tabular:E.coli_diff_org} and \ref{tabular:E.coli_diff}, are similar between the original study and the reproduction. The gene \textit{deuC} seems to be split in two genes in the original study, \textit{deuC\_1} and \textit{deuC\_2}. The gff-file used is from the original study, but the resulting amount of genes from the annotation differs. This could be because the annotation in process differs between the studies, due use of a later versions of genomicFeatures and genomicAlignments or due to difference in information.  Furthermore, there is a difference in the order of significance of the top significant genes, possibly due to use of different DESeq versions.
+
+The PCA plots differ somewhat between the original study and the reproduction of it (see figures \ref{fig:orig_study_figures} and \ref{fig:pca_volc_E_coli}). It is possible that the reason for this is a difference in normalisation methods. No normalisation method was mentioned in the article and therefore the method used for this study was the one recommended for DESeq.
+
+However, when comparing the results for the \textit{E. coli} genome, from the original study to the results of this study, the PCA and volcano plots, in figures \ref{fig:orig_study_figures} and \ref{fig:pca_volc_E_coli}, are similar and the tables \ref{tabular:E.coli_diff_org} and \ref{tabular:E.coli_diff}, of the most significantly deferentially expressed genes, although ordered differently, contain many of the same genes. Thus, one can conclude that the reproduction of this part has succeeded. 
+
+
+%PLASMID
+
+%CHECK Signifikanta plasmidgeners annotering i table 4 finns inte någon annanstans. Stämmer inte överens med gener i plasmiden på ncbi, inte heller beskrivning hittas --> Vi kan ej annotera vårå plasmigener på samma sätt, så vi kan ej jämföra. Fold change verkar stämma men vi kan ej bekräfta identitet.
+
+
+As for the result of the plasmid analysis, the annotation of the genes found in table \ref{tabular:plasmid_diff_org} have not been found in NCBI's version of the plasmid, nor anywhere else. Thus the genes could not be annotated, making it impossible to compare the results for the differentially expressed genes from the original study to the results of the reproduction (see tables \ref{tabular:plasmid_diff_org} and \ref{tabular:plasmid_diff}). When comparing the tables further, the fold changes of gene expression in the original and reproduction study seem similar, indicating that reproduction could be successful. However, this can not be confirmed as the gene identities remain unknown. It should be noted that with a low plasmid gene expression, a bigger sample size would be needed to detect differences. Thus, it is possible that repeating the study with a larger sample size might lead to different results due to increased power of the tests. 
+
+% SÄG NÅGOT OM FIGUR 3
+
+%The study could be made more clear an specific as to what was done and how, in every step of the way.
+%In conclusion --- how reproducible was the study?????
+When compared, the reproduction of the study provided results rather similar to the original study. However, the original study could have been more clear and detailed. As an example, the normalization method for PCA was not mentioned, resulting in a different a different mapping even if the overall result was the same. A major defect of the study was the inability of confirming the plasmid gene annotations, making it impossible to compare the results. An addition of further information about points such as these would improve the article, as it can be concluded that reproduction of the study was not fully possible.
+
+
+
+%Bowtie comparison 
+%Bowtie-0.12.7 differs from the latest version, but comparison was found of these specifically. The closest comparison was that of Bowtie 1 and Bowtie 2 \cite{bowtie}, where the biggest difference was that Bowtie 2 is able to process longer reads compared to Bowtie 1, whilst Bowtie 1 should perform equally well for sequence reads under ~50 bp. Furthermore, the present version has an increased throughput rate and fully supports gapped alignments, which bowtie 1 does not. 

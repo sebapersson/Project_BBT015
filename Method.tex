@@ -1,0 +1,18 @@
+\subsection{Data description retrieval}
+
+The RNA-seqeunce data was retrieved from \href{https://www.ebi.ac.uk/arrayexpress/}{\color{MidnightBlue} \underline{ArrayExpress}}, association number E-MTAB-7190. In the study, sequencing of the data was performed using Illumina HiSeq 2500 in singe-read mode with 50 cycles, for more information regarding the sample data see the original paper \cite{jousset2018transcriptional}. The reference genome, and associated gff3-file, for the \textit{E. coli}  K-12 sub-strain DH10B was downloaded from NCBI-nucelotide database, accession number \href{https://www.ncbi.nlm.nih.gov/nuccore/CP000948.1}{\color{MidnightBlue} \underline{CP000948.1}}. The reference genome, and associated gff3-file, for the pBIC-1a plasmid was also downlaoded from NCBI-nucleotide database, accession number \href{https://www.ncbi.nlm.nih.gov/nuccore/CP022574}{\color{MidnightBlue} \underline{CP022574}}. 
+
+ %In total the data consists six samples of \textit{E.coli} K-12 sub-strain DH10B transformed with the pBIC-1a plasmid. The first three samples (sample 1-3) act as control and have not been exposed to  imipenem, while the last three samples (sample 4-6) have been exposed to imipenem for 10 minutes before extraction of RNA.
+
+\subsection{Alignment using bowtie-0.12.7}
+
+Bowtie-0.12.7 \cite{langmead2009} was downloaded from \href{https://sourceforge.net/projects/bowtie-bio/}{\color{MidnightBlue} \underline{SourceForge}}. All bowtie functions used were from this version.
+
+ Indexes were created for the genome of E.coli TOP10 and the 
+ plasmid pBIC1a using bowtie-build. Bowtie was then used to align RNA-seq samples 1-6 to the reference sequences, using the indexes. Samples were not filtered prior to alignment, and no filtering was performed of the alignments. Samtools (version 1.9-97-g4a51966) was used to convert the sam-file output from bowtie to bam-file format \cite{li2009sequence_sam_tools}. The bam-files were not sorted as there was no need for this.    
+ 
+\subsection{Differential analysis}
+
+In order to perform differential analysis a count matrix (rows corresponding to genes and columns to samples) was generated from the aligned \textit{E. coli} and the pBIC-1a plasmid data. The count matrix was created using Rsamtools (version 1.34.1), GenomicFeatures (version 1.34.3) and GenomicAlignments (version 1.18.1) in R (version 3.5.2) \cite{lawrence2013software_gen_align, morgan2016rsamtools}. The union mode was chosen for performing the counting with the \textit{summarizeOverlaps}-function, meaning that reads overlapping more than one feature (gene) were discarded. 
+
+The differential analysis was performed using the DESeq2-package (version 1.22.2), which tests for significance using a negative-binomial model of the counts \cite{love2014moderated_DESeq2}. The p-values were adjusted by the Benjamini–Hochberg procedure which controls the false-discovery rate (fdr), and a fdr-cut off at 0.05 was chosen \cite{benjamini}. For the PCA-plot the data was normalised by the vst-procedure in DESeq2 \cite{love2014moderated_DESeq2}. All the code used to perform the analysis can be found at the projects GitHub \href{https://github.com/sebapersson/Project_BBT015}{\color{MidnightBlue} \underline{repository}}. 

@@ -1,0 +1,36 @@
+%http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005619
+
+%Why it is important to be able to reproduce this article
+The minimum requirement for an article in research to be believable is reproducibility \cite{goodman2016does,peng2011reproducible}. For a study to be reproducible, each step has to be described in enough detail to enable someone else to completely repeat the same procedure and, given the same data and material, obtain the same results \cite{goodman2016does}.
+
+%Aim
+Here, we aim to reproduce the results of the differential gene expression analysis in the study ”Transcriptional Landscape of $bla_{KPC-2}$ Plasmid and Response to Imipenem Exposure in \textit{Escherichia coli} TOP10” \cite{jousset2018transcriptional}. In the study a plasmid called pBIC1a, carrying the multi-resistance gene $bla_{KPC-2}$ as well as other genes (only two more related to antibiotic resistance), was introduced in \textit{E. coli} K-12 sub-strain DH10B. The plasmid had been isolated from \textit{Klebsiella pneumonia} in which it seemed connected to the rapid spread of the bacteria. The purpose of the study was to identify the plasmid sequence, to gain understanding of basal gene expression from the plasmid and genome, as well as in the transcriptional changes at exposure to imipenim, a broad spectrum antibiotic \cite{clissold1987imipenem}. Of the different procedures in the study, we aim to reproduce the alignment of transcriptomic data to the \textit{E.coli} genome and the plasmid sequence, as well as reproducing the differential gene expression analysis  \cite{jousset2018transcriptional, rosinski2015single}.
+
+%Outline of the article
+ In the article six samples were analysed, the first three samples (sample 1-3) act as control and have not been exposed to  imipenem, while the last three samples (sample 4-6) have been exposed to imipenem for 10 minutes before extraction of RNA. Results showed that of the plasmid genes, nine out of 234 were upregulated when at imipenem exposure. However, none of these genes were the antibiotic resistance genes. The remaining genes were expressed at a lower level, with the most expressed ones were related to antibiotic resistance, plasmid replication and conjugation, or connected to mobile elements in the plasmid. Looking at the \textit{E.coli} there was a bigger change in expression. Of all the native \textit{E. coli} genes, 1563 out of 4550 genes were differentially expressed as a response to the imipenem exposure.
+
+%Scientific justification of our claims and findings --> Bakgrund med källor till grejer vi vill förklara 
+
+
+To reproduce these results the method described in the paper was followed as closely as possible. In the study, Bowtie version 0.12.7 was used to align the RNA-seq reads to the reference sequences. Hence, this of Bowtie version 0.12.7 was downloaded and used to reproduce the study as well. The differential gene expression analysis was performed using R version 3.5.2, whilst the version used in the original study was 3.3.1. Using an older version would have resulted in problems regarding DESeq, as this function relies on other functions that have to be compatible. Thereby this was omitted.
+
+%This means that the versions of functions used for the analysis were different as well. Downloading the older versions were considered, but for DESeq this would have resulted in problems, as this function relies on other functions that have to be compatible. Thereby this was omitted.
+
+
+As for the results of the study reproduction it was partially successful. Some differences were found in terms of number of total gene numbers and annotation of the plasmid genes was unsuccessful, making it hard to compare these results. However, the significance and expression level of genes in the \textit{E.coli} were found to be similar and the expression levels of the plasmid genes seem to match the genes in the paper, even if the identity of the respective genes could not be identified. Given the requirement of reproducibility is the possibility of recreating the same results given the same data, the similarity in results is insufficient. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
