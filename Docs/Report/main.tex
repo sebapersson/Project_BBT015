@@ -1,0 +1,150 @@
+\documentclass[a4paper]{article}
+% Fixing nice colours 
+\usepackage[dvipsnames, svgnames]{xcolor}
+% Placing figures in parallel
+\usepackage{graphicx, wrapfig} 
+% Basic math 
+\usepackage{amsmath, amssymb}
+\usepackage{floatflt} %f�r inkapslade bilder.
+\usepackage{fancyhdr}
+\usepackage[top=3cm, bottom=3cm,inner=3cm, outer=3cm]{geometry}	
+% Create cover page 
+\usepackage{eso-pic}
+\usepackage[utf8]{inputenc}
+\usepackage[swedish, english]{babel}
+\usepackage[numbers]{natbib}
+\usepackage[toc,page]{appendix}
+% Fixing paragraphs 
+\setlength{\parskip}{5.5pt}  % x pt = hopp mellan stycken
+\setlength{\parindent}{0pt} % 0 pt  = indrag
+% Figurtexter 
+\usepackage[format=plain, labelfont={bf}, textfont=it]{caption}  
+ % Tillåter bilder att läggas bredvid varandra med kommandot \subfigure
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{wasysym}
+% For inserting links
+\usepackage{hyperref} 
+% For inserting trees
+\usepackage[linguistics]{forest}   
+
+\begin{document}\thispagestyle{empty}
+
+\pagenumbering{gobble} 
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\begin{center} % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Chalmers University of Technology}\\[1.5cm] % Name of your university/college
+\textsc{\Large Advanced Bioinformatics, BBT015}\\[0.5cm] % Major heading such as course name
+
+\textsc{\Large }\\[0.5cm] %
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.8cm]
+{ \huge \bfseries Project Report on Replication of a Study 
+ }\\[0.8cm] 
+\Large \bfseries Transcriptional Landscape of a bla$_{KPC-2}$ Plasmid and Response to Imipenem Exposure in Escherichia coli TOP10
+% Title of your document
+\HRule \\[0.8cm]
+
+
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}[t]{0.5\textwidth}
+\begin{flushleft} \large
+\emph{Authors}\\
+\bigskip
+% Your name
+Emma Andersson\\
+Andrea Clausen Lind\\
+Martina Hermanova Billstein\\
+Sebastian Persson
+
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisors}\\
+\bigskip
+% Supervisor's Name
+Aleksej Zelezniak\\
+Filip Buric
+\end{flushright}
+\end{minipage}\\[2cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+\vfill % Fill the rest of the page with whitespace
+
+{\large \today}\\[2cm] 
+
+
+
+\end{center}
+
+\newpage
+
+%ABSTRACT
+\section*{Abstract}
+\input{Abstract.tex}
+
+\newpage
+
+%%%%%%%%%%%%%% Table of content %%%%%%%%%%%%%%%
+\pagebreak
+\tableofcontents
+\pagebreak
+\pagenumbering{arabic} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  The text begins here %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newpage
+\section{Introduction}
+\input{Introduction.tex}
+
+\newpage
+\section{Method} 
+\input{Method.tex}
+
+\newpage
+\section{Results}
+\input{Results.tex}
+
+\newpage
+\section{Discussion}
+\input{Discussion.tex}
+
+%\section{Appendix}
+
+
+% List of references 
+\newpage
+\bibliographystyle{vancouver}
+\bibliography{References.bib}
+
+% Reference through \cite{mensh2017ten}
+
+\newpage
+\appendix
+\input{Appendix_tables.tex}
+
+%\input{Appendix.tex} 
+
+
+\end{document}
+
