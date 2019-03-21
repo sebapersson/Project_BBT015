@@ -23,28 +23,28 @@ if(!require(DESeq2)){
 }
 
 if(!require(pheatmap)){
-  print("pheatmap isn't installed, will install:")
-  install.packages("pheatmap")
+  print("pheatmap isn't installed, program will exit:")
+  quit(status=5)	
 }
 
 if(!require(xtable)){
-  print("pheatmap isn't installed, will install:")
-  install.packages("xtable")
+  print("pheatmap isn't installed, program will exit:")
+  quit(status=6)	
 }
 
 if(!require(RColorBrewer)){
-  print("RColorBrewer isn't installed, will install:")
-  install.packages("RColorBrewer")
+  quit(status=7)	
+  print("RColorBrewer isn't installed, program will exit:")
 }
 
 if(!require(ggplot2)){
-  print("ggplot2 isn't installed")
-  install.packages("ggplot2")
+  print("ggplot2 isn't installed, program will exit")
+  quit(status=8)	
 }
 
 if(!require(PoiClaClu)){
-  print("PoiClaClu isn't installed, will install:")
-  install.packages("PoiClaClu")
+  print("PoiClaClu isn't installed, program will exit")
+  quit(status=9)	
 }
 
 message("All packages are installed")
